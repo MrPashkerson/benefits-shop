@@ -28,7 +28,7 @@
 
 .warning {
   margin: 0;
-  color: var(--theme-warning-500);
+  color: var(--theme-error-500);
 }
 
 :global([data-theme="light"]) {
@@ -91,7 +91,7 @@
   padding: calc(var(--base) * 0.25) calc(var(--base) * 0.25);
 }
 
-:global([data-theme="dark"]) {
+:global([data-theme="dark-element"]) {
   .quantity {
     background-color: var(--theme-elevation-150);
   }
