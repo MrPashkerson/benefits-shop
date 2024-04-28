@@ -41,7 +41,7 @@ export const RecoverPasswordForm: React.FC = () => {
       setError('')
     } else {
       setError(
-        'There was a problem while attempting to send you a password reset email. Please try again.',
+        'При попытке отправить письмо со сбросом пароля возникла проблема. Пожалуйста, попробуйте ещё раз.',
       )
     }
   }, [])
@@ -50,19 +50,15 @@ export const RecoverPasswordForm: React.FC = () => {
     <Fragment>
       {!success && (
         <React.Fragment>
-          <h1>Recover Password</h1>
           <div className={classes.formWrapper}>
             <p>
-              {`Please enter your email below. You will receive an email message with instructions on
-              how to reset your password. To manage your all users, `}
-              <Link href="/admin/collections/users">login to the admin dashboard</Link>
-              {'.'}
+              {`Пожалуйста, введите свой адрес электронной почты. Вы получите письмо с инструкцией по сбросу пароля.`}
             </p>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
               <Message error={error} className={classes.message} />
               <Input
                 name="email"
-                label="Email Address"
+                label="Email"
                 required
                 register={register}
                 error={errors.email}
@@ -71,7 +67,7 @@ export const RecoverPasswordForm: React.FC = () => {
               <Button
                 type="submit"
                 appearance="primary"
-                label="Recover Password"
+                label="Восстановить пароль"
                 className={classes.submit}
               />
             </form>
@@ -80,8 +76,11 @@ export const RecoverPasswordForm: React.FC = () => {
       )}
       {success && (
         <React.Fragment>
-          <h1>Request submitted</h1>
-          <p>Check your email for a link that will allow you to securely reset your password.</p>
+          <h2 className={classes.subTitle}>Запрос отправлен</h2>
+          <p>
+            Проверьте свою электронную почту, чтобы найти ссылку, которая позволит вам безопасно
+            сбросить пароль.
+          </p>
         </React.Fragment>
       )}
     </Fragment>
