@@ -1,0 +1,26 @@
+@use '../../../_css/queries.scss' as *;
+
+.card {
+  position: relative;
+  background-color: var(--theme-elevation-100);
+  min-height: 360px;
+  min-width: 250px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+
+  background-size: 225px;
+  background-position: 50% 20%;
+  background-repeat: no-repeat;
+}
+
+.title {
+  border-radius: 10px;
+  padding: 16px;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+}
