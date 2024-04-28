@@ -17,6 +17,21 @@ const PORT = process.env.PORT || 3000
 
 const start = async (): Promise<void> => {
   await payload.init({
+    email: {
+      transportOptions: {
+        service: process.env.SMTP_SERVICE,
+        host: process.env.SMTP_HOST,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+        port: Number(process.env.SMTP_PORT),
+        secure: Number(process.env.SMTP_PORT) === 465, // true for port 465, false (the default) for 587 and others
+        requireTLS: true,
+      },
+      fromName: 'Магазин Льгот',
+      fromAddress: process.env.SMTP_USER,
+    },
     secret: process.env.PAYLOAD_SECRET || '',
     express: app,
     onInit: () => {

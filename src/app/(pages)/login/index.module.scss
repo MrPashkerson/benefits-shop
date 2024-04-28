@@ -5,6 +5,7 @@
   display: grid;
   grid-template-columns: 1fr 45%;
   height: 100vh;
+  font-family: var(--font-jost);
 
   @include mid-break {
     grid-template-columns: 1fr;
@@ -56,6 +57,9 @@
   width: 30%;
   min-width: 150px;
   z-index: 10;
+  background-color: var(--theme-elevation-800);
+  border-radius: 10px;
+  padding: 2px;
 
   @include mid-break {
     width: 45%;

@@ -65,7 +65,7 @@ export const home: Partial<Page> = {
             relationTo: 'pages',
             value: '{{PRODUCTS_PAGE_ID}}',
           },
-          label: 'Shop now',
+          label: 'Shop aaasnow',
           url: '',
         },
       },

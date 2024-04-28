@@ -2,13 +2,13 @@ import type { Page } from '../payload-types'
 
 export const staticCart: Page = {
   id: '',
-  title: 'Cart',
+  title: 'Корзина',
   slug: 'cart',
   createdAt: '',
   updatedAt: '',
   _status: 'published',
   meta: {
-    title: 'Cart',
+    title: 'Корзина',
     description:
       'Your cart will sync to your user profile so you can continue shopping from any device.',
   },
@@ -21,7 +21,7 @@ export const staticCart: Page = {
         type: 'h1',
         children: [
           {
-            text: 'Cart',
+            text: 'Корзина',
           },
         ],
       },
@@ -96,7 +96,7 @@ export const staticCart: Page = {
           link: {
             type: 'custom',
             url: '/admin',
-            label: 'Go to dashboard',
+            label: 'Панель управления',
             appearance: 'primary',
             reference: null,
           },
