@@ -82,7 +82,7 @@ export default async function Order({ params: { id } }) {
               <Fragment key={index}>
                 <div className={classes.row}>
                   <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>
-                    {!metaImage && <span className={classes.placeholder}>No image</span>}
+                    {!metaImage && <span className={classes.placeholder}>Нет изображения</span>}
                     {metaImage && typeof metaImage !== 'string' && (
                       <Media
                         className={classes.media}
