@@ -113,7 +113,7 @@ export const CheckoutPage: React.FC<{
                 <Fragment key={index}>
                   <div className={classes.row}>
                     <div className={classes.mediaWrapper}>
-                      {!metaImage && <span className={classes.placeholder}>No image</span>}
+                      {!metaImage && <span className={classes.placeholder}>Нет изображения</span>}
                       {metaImage && typeof metaImage !== 'string' && (
                         <Media
                           className={classes.media}
