@@ -10,10 +10,9 @@ const Categories = ({ categories }: { categories: Category[] }) => {
   return (
     <section className={classes.container}>
       <div className={classes.titleWrapper}>
-        <h3>Покупки по категориям</h3>
+        <h3>Льготы по категориям</h3>
         <Link href="/products">Показать все</Link>
       </div>
-
 
       <div className={classes.list}>
         {categories.map(category => {

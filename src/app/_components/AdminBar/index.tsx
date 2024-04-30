@@ -9,14 +9,18 @@ import { Gutter } from '../Gutter'
 
 import classes from './index.module.scss'
 
-const Title: React.FC = () => <span>Dashboard</span>
+const Title: React.FC = () => (
+  <span>
+    <u>Панель управления</u>
+  </span>
+)
 
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps
 }> = props => {
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
-  const collection = segments?.[1] === 'products' ? 'products' : 'pages'
+  // const collection = segments?.[1] === 'products' ? 'products' : 'pages'
   const [show, setShow] = React.useState(false)
 
   const { user } = useAuth()
@@ -36,11 +40,11 @@ export const AdminBar: React.FC<{
       <Gutter className={classes.blockContainer}>
         <PayloadAdminBar
           {...adminBarProps}
-          collection={collection}
-          collectionLabels={{
-            singular: collection === 'products' ? 'Product' : 'Page',
-            plural: collection === 'products' ? 'Products' : 'Pages',
-          }}
+          // collection={collection}
+          // collectionLabels={{
+          //   singular: collection === 'products' ? 'Льготы' : 'Страница',
+          //   plural: collection === 'products' ? 'Льгот' : 'Страницы',
+          // }}
           key={user?.id} // use key to get the admin bar to re-run its `me` request
           cmsURL={process.env.NEXT_PUBLIC_SERVER_URL}
           className={classes.payloadAdminBar}
