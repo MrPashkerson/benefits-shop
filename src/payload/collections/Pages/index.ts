@@ -13,6 +13,10 @@ import { revalidatePage } from './hooks/revalidatePage'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: 'документа',
+    plural: 'Страницы',
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
@@ -38,11 +42,13 @@ export const Pages: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Название',
       type: 'text',
       required: true,
     },
     {
       name: 'publishedOn',
+      label: 'Опубликовано',
       type: 'date',
       admin: {
         position: 'sidebar',
@@ -65,14 +71,15 @@ export const Pages: CollectionConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Hero',
+          label: 'Главный баннер',
           fields: [hero],
         },
         {
-          label: 'Content',
+          label: 'Контент',
           fields: [
             {
               name: 'layout',
+              label: 'Разметка страницы',
               type: 'blocks',
               required: true,
               blocks: [CallToAction, Content, MediaBlock, Archive],

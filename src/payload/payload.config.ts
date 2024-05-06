@@ -22,6 +22,7 @@ import CustomIcon from './components/CustomIcon'
 import CustomLogo from './components/CustomLogo'
 import { createPaymentIntent } from './endpoints/create-payment-intent'
 import { customersProxy } from './endpoints/customers'
+import { checkPages } from './endpoints/ensure-collection-pages-not-empty'
 import { productsProxy } from './endpoints/products'
 import { seed } from './endpoints/seed'
 import { Footer } from './globals/Footer'
@@ -29,7 +30,6 @@ import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
 import { priceUpdated } from './stripe/webhooks/priceUpdated'
 import { productUpdated } from './stripe/webhooks/productUpdated'
-import {checkPages} from "./endpoints/ensure-collection-pages-not-empty";
 
 const generateTitle: GenerateTitle = () => {
   return 'Магазин Льгот'
@@ -44,7 +44,7 @@ dotenv.config({
 export default buildConfig({
   admin: {
     autoLogin: {
-      email: 'pavelromanov122^@gmail.com',
+      email: 'pavelromanov1226@gmail.com',
       password: 'toor',
     },
     user: Users.slug,
@@ -59,7 +59,7 @@ export default buildConfig({
     meta: {
       favicon: 'public/favicon.ico',
     },
-    dateFormat: 'HH:mm dd-LL-yyyy',
+    dateFormat: 'dd-LL-yyyy HH:mm',
     webpack: config => {
       return {
         ...config,

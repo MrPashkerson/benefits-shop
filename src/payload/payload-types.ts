@@ -287,101 +287,8 @@ export interface Product {
           }
       )[]
     | null;
-  stripeProductID?: string | null;
-  priceJSON?: string | null;
-  enablePaywall?: boolean | null;
-  paywall?:
-    | (
-        | {
-            invertBackground?: boolean | null;
-            richText: {
-              [k: string]: unknown;
-            }[];
-            links?:
-              | {
-                  link: {
-                    type?: ('reference' | 'custom') | null;
-                    newTab?: boolean | null;
-                    reference?: {
-                      relationTo: 'pages';
-                      value: string | Page;
-                    } | null;
-                    url?: string | null;
-                    label: string;
-                    icon?: string | Media | null;
-                    appearance?: ('primary' | 'secondary') | null;
-                  };
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'cta';
-          }
-        | {
-            invertBackground?: boolean | null;
-            columns?:
-              | {
-                  size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
-                  richText: {
-                    [k: string]: unknown;
-                  }[];
-                  enableLink?: boolean | null;
-                  link?: {
-                    type?: ('reference' | 'custom') | null;
-                    newTab?: boolean | null;
-                    reference?: {
-                      relationTo: 'pages';
-                      value: string | Page;
-                    } | null;
-                    url?: string | null;
-                    label: string;
-                    icon?: string | Media | null;
-                    appearance?: ('default' | 'primary' | 'secondary') | null;
-                  };
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'content';
-          }
-        | {
-            invertBackground?: boolean | null;
-            position?: ('default' | 'fullscreen') | null;
-            media: string | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'mediaBlock';
-          }
-        | {
-            introContent: {
-              [k: string]: unknown;
-            }[];
-            populateBy?: ('collection' | 'selection') | null;
-            relationTo?: 'products' | null;
-            categories?: (string | Category)[] | null;
-            limit?: number | null;
-            selectedDocs?:
-              | {
-                  relationTo: 'products';
-                  value: string | Product;
-                }[]
-              | null;
-            populatedDocs?:
-              | {
-                  relationTo: 'products';
-                  value: string | Product;
-                }[]
-              | null;
-            populatedDocsTotal?: number | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'archive';
-          }
-      )[]
-    | null;
-  categories?: (string | Category)[] | null;
+  price?: number | null;
+  categories?: (string | null) | Category;
   relatedProducts?: (string | Product)[] | null;
   slug?: string | null;
   skipSync?: boolean | null;
@@ -397,7 +304,6 @@ export interface Product {
 export interface Order {
   id: string;
   orderedBy?: (string | null) | User;
-  stripePaymentIntentID?: string | null;
   total: number;
   items?:
     | {
@@ -415,7 +321,6 @@ export interface User {
   name?: string | null;
   roles?: ('admin' | 'customer')[] | null;
   purchases?: (string | Product)[] | null;
-  stripeCustomerID?: string | null;
   cart?: {
     items?: CartItems;
   };
@@ -505,7 +410,7 @@ export interface Header {
 }
 export interface Footer {
   id: string;
-  copyright: string;
+  copyright?: string | null;
   navItems?:
     | {
         link: {

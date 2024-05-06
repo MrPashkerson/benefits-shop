@@ -12,6 +12,10 @@ import { CustomerSelect } from './ui/CustomerSelect'
 
 const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    plural: 'Пользователи',
+    singular: 'документа',
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email'],
@@ -43,20 +47,22 @@ const Users: CollectionConfig = {
   fields: [
     {
       name: 'name',
+      label: 'ФИО',
       type: 'text',
     },
     {
       name: 'roles',
+      label: 'Роли',
       type: 'select',
       hasMany: true,
       defaultValue: ['customer'],
       options: [
         {
-          label: 'admin',
+          label: 'Администратор',
           value: 'admin',
         },
         {
-          label: 'customer',
+          label: 'Пользователь',
           value: 'customer',
         },
       ],
@@ -71,7 +77,7 @@ const Users: CollectionConfig = {
     },
     {
       name: 'purchases',
-      label: 'Purchases',
+      label: 'Покупки',
       type: 'relationship',
       relationTo: 'products',
       hasMany: true,
@@ -80,37 +86,25 @@ const Users: CollectionConfig = {
       },
     },
     {
-      name: 'stripeCustomerID',
-      label: 'Stripe Customer',
-      type: 'text',
-      access: {
-        read: ({ req: { user } }) => checkRole(['admin'], user),
-      },
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: CustomerSelect,
-        },
-      },
-    },
-    {
-      label: 'Cart',
+      label: 'Корзина',
       name: 'cart',
       type: 'group',
       fields: [
         {
           name: 'items',
-          label: 'Items',
+          label: 'Элементы',
           type: 'array',
           interfaceName: 'CartItems',
           fields: [
             {
               name: 'product',
+              label: 'Льгота',
               type: 'relationship',
               relationTo: 'products',
             },
             {
               name: 'quantity',
+              label: 'Количество',
               type: 'number',
               min: 0,
               admin: {
@@ -142,7 +136,7 @@ const Users: CollectionConfig = {
     },
     {
       name: 'skipSync',
-      label: 'Skip Sync',
+      label: 'Пропустить синхронизацию',
       type: 'checkbox',
       admin: {
         position: 'sidebar',

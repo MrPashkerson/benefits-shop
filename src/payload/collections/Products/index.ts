@@ -15,6 +15,10 @@ import { ProductSelect } from './ui/ProductSelect'
 
 const Products: CollectionConfig = {
   slug: 'products',
+  labels: {
+    singular: 'документа',
+    plural: 'Льготы',
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'stripeProductID', '_status'],
@@ -42,11 +46,13 @@ const Products: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Название',
       type: 'text',
       required: true,
     },
     {
       name: 'publishedOn',
+      label: 'Опубликовано',
       type: 'date',
       admin: {
         position: 'sidebar',
@@ -66,70 +72,30 @@ const Products: CollectionConfig = {
       },
     },
     {
-      type: 'tabs',
-      tabs: [
-        {
-          label: 'Content',
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive],
-            },
-          ],
-        },
-        {
-          label: 'Product Details',
-          fields: [
-            {
-              name: 'stripeProductID',
-              label: 'Stripe Product',
-              type: 'text',
-              admin: {
-                components: {
-                  Field: ProductSelect,
-                },
-              },
-            },
-            {
-              name: 'priceJSON',
-              label: 'Price JSON',
-              type: 'textarea',
-              admin: {
-                readOnly: true,
-                hidden: true,
-                rows: 10,
-              },
-            },
-            {
-              name: 'enablePaywall',
-              label: 'Enable Paywall',
-              type: 'checkbox',
-            },
-            {
-              name: 'paywall',
-              label: 'Paywall',
-              type: 'blocks',
-              access: {
-                read: checkUserPurchases,
-              },
-              blocks: [CallToAction, Content, MediaBlock, Archive],
-            },
-          ],
-        },
-      ],
+      name: 'layout',
+      label: 'Разметка страницы',
+      type: 'blocks',
+      blocks: [CallToAction, Content, MediaBlock, Archive],
+    },
+    {
+      name: 'price',
+      label: 'Цена',
+      type: 'number',
+      required: false, // TODO: change to true
     },
     {
       name: 'categories',
+      label: 'Категория',
       type: 'relationship',
       relationTo: 'categories',
-      hasMany: true,
+      hasMany: false,
       admin: {
         position: 'sidebar',
       },
     },
     {
       name: 'relatedProducts',
+      label: 'Связанные продукты',
       type: 'relationship',
       relationTo: 'products',
       hasMany: true,
@@ -144,7 +110,7 @@ const Products: CollectionConfig = {
     slugField(),
     {
       name: 'skipSync',
-      label: 'Skip Sync',
+      label: 'Пропустить синхронизацию',
       type: 'checkbox',
       admin: {
         position: 'sidebar',

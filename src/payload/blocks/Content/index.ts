@@ -7,24 +7,25 @@ import richText from '../../fields/richText'
 const columnFields: Field[] = [
   {
     name: 'size',
+    label: 'Занимаемы размер на странице',
     type: 'select',
     defaultValue: 'oneThird',
     options: [
       {
         value: 'oneThird',
-        label: 'One Third',
+        label: 'Одна треть',
       },
       {
         value: 'half',
-        label: 'Half',
+        label: 'Половина',
       },
       {
         value: 'twoThirds',
-        label: 'Two Thirds',
+        label: 'Две трети',
       },
       {
         value: 'full',
-        label: 'Full',
+        label: 'На всю ширину',
       },
     ],
   },
@@ -44,10 +45,15 @@ const columnFields: Field[] = [
 
 export const Content: Block = {
   slug: 'content',
+  labels: {
+    singular: 'Контент',
+    plural: 'Контент',
+  },
   fields: [
     invertBackground,
     {
       name: 'columns',
+      label: 'Колонки',
       type: 'array',
       fields: columnFields,
     },

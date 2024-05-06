@@ -5,25 +5,26 @@ import richText from '../../fields/richText'
 export const Archive: Block = {
   slug: 'archive',
   labels: {
-    singular: 'Archive',
-    plural: 'Archives',
+    singular: 'Архив',
+    plural: 'Архивы',
   },
   fields: [
     richText({
       name: 'introContent',
-      label: 'Intro Content',
+      label: 'Текст',
     }),
     {
       name: 'populateBy',
+      label: 'Заполнить',
       type: 'select',
       defaultValue: 'collection',
       options: [
         {
-          label: 'Collection',
+          label: 'Коллекцией',
           value: 'collection',
         },
         {
-          label: 'Individual Selection',
+          label: 'Отдельным значением',
           value: 'selection',
         },
       ],
@@ -31,14 +32,14 @@ export const Archive: Block = {
     {
       type: 'select',
       name: 'relationTo',
-      label: 'Collections To Show',
+      label: 'Коллекция для показа',
       defaultValue: 'products',
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       options: [
         {
-          label: 'Products',
+          label: 'Льготы',
           value: 'products',
         },
       ],
@@ -46,7 +47,7 @@ export const Archive: Block = {
     {
       type: 'relationship',
       name: 'categories',
-      label: 'Categories To Show',
+      label: 'Категории для показа',
       relationTo: 'categories',
       hasMany: true,
       admin: {
@@ -56,7 +57,7 @@ export const Archive: Block = {
     {
       type: 'number',
       name: 'limit',
-      label: 'Limit',
+      label: 'Лимит',
       defaultValue: 10,
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
@@ -66,7 +67,7 @@ export const Archive: Block = {
     {
       type: 'relationship',
       name: 'selectedDocs',
-      label: 'Selection',
+      label: 'Льгота',
       relationTo: ['products'],
       hasMany: true,
       admin: {
@@ -76,23 +77,23 @@ export const Archive: Block = {
     {
       type: 'relationship',
       name: 'populatedDocs',
-      label: 'Populated Docs',
+      label: 'Заполненные документы',
       relationTo: ['products'],
       hasMany: true,
       admin: {
         disabled: true,
-        description: 'This field is auto-populated after-read',
+        description: 'Это поле автоматически заполняется после прочтения',
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
     },
     {
       type: 'number',
       name: 'populatedDocsTotal',
-      label: 'Populated Docs Total',
+      label: 'Всего заполнено документов',
       admin: {
         step: 1,
         disabled: true,
-        description: 'This field is auto-populated after-read',
+        description: 'Это поле автоматически заполняется после прочтения',
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
     },

@@ -15,8 +15,8 @@ const logs = process.env.LOGS_STRIPE_PROXY === '1'
 // GET /api/products
 export const productsProxy: PayloadHandler = async (req: PayloadRequest, res) => {
   if (!req.user || !checkRole(['admin'], req.user)) {
-    if (logs) req.payload.logger.error({ err: `You are not authorized to access products` })
-    res.status(401).json({ error: 'You are not authorized to access products' })
+    if (logs) req.payload.logger.error({ err: `Вы не авторизованы` })
+    res.status(401).json({ error: 'Вы не авторизованы' })
     return
   }
 

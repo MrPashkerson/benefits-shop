@@ -36,7 +36,7 @@ const richText: RichText = (
               {
                 type: 'richText',
                 name: 'caption',
-                label: 'Caption',
+                label: 'Текст',
                 editor: slateEditor({
                   admin: {
                     elements: [...elements],
@@ -47,18 +47,18 @@ const richText: RichText = (
               {
                 type: 'radio',
                 name: 'alignment',
-                label: 'Alignment',
+                label: 'Выравнивание',
                 options: [
                   {
-                    label: 'Left',
+                    label: 'По левому краю',
                     value: 'left',
                   },
                   {
-                    label: 'Center',
+                    label: 'По центру',
                     value: 'center',
                   },
                   {
-                    label: 'Right',
+                    label: 'По правому краю',
                     value: 'right',
                   },
                 ],
@@ -66,7 +66,7 @@ const richText: RichText = (
               {
                 name: 'enableLink',
                 type: 'checkbox',
-                label: 'Enable Link',
+                label: 'Добавить ссылку',
               },
               link({
                 appearances: false,
@@ -95,6 +95,7 @@ const richText: RichText = (
   return deepMerge<RichTextField, Partial<RichTextField>>(
     {
       name: 'richText',
+      label: 'Текст',
       type: 'richText',
       required: true,
       editor: slateEditor({

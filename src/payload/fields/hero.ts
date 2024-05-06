@@ -13,28 +13,28 @@ export const hero: Field = {
     {
       type: 'select',
       name: 'type',
-      label: 'Type',
+      label: 'Тип важности',
       required: true,
       defaultValue: 'lowImpact',
       options: [
         {
-          label: 'None',
+          label: 'Отсутствует',
           value: 'none',
         },
         {
-          label: 'High Impact',
+          label: 'Важный',
           value: 'highImpact',
         },
         {
-          label: 'Medium Impact',
+          label: 'Нейтральный',
           value: 'mediumImpact',
         },
         {
-          label: 'Low Impact',
+          label: 'Незначительный',
           value: 'lowImpact',
         },
         {
-          label: 'Custom Hero',
+          label: 'Другое',
           value: 'customHero',
         },
       ],
@@ -52,11 +52,13 @@ export const hero: Field = {
     }),
     {
       name: 'media',
+      label: 'Медифайл',
       type: 'upload',
       relationTo: 'media',
       required: true,
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact', 'customHero'].includes(type),
+        condition: (_, { type } = {}) =>
+          ['highImpact', 'mediumImpact', 'customHero'].includes(type),
       },
     },
   ],

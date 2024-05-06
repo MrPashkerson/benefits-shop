@@ -4,15 +4,15 @@ import deepMerge from '../utilities/deepMerge'
 
 export const appearanceOptions = {
   primary: {
-    label: 'Primary Button',
+    label: 'Основная кнопка',
     value: 'primary',
   },
   secondary: {
-    label: 'Secondary Button',
+    label: 'Второстепенная кнопка',
     value: 'secondary',
   },
   default: {
-    label: 'Default',
+    label: 'По умолчанию',
     value: 'default',
   },
 }
@@ -28,6 +28,7 @@ type LinkType = (options?: {
 const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
   const linkResult: Field = {
     name: 'link',
+    label: 'Ссылка',
     type: 'group',
     admin: {
       hideGutter: true,
@@ -38,14 +39,15 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
         fields: [
           {
             name: 'type',
+            label: 'Тип',
             type: 'radio',
             options: [
               {
-                label: 'Internal link',
+                label: 'Внутренняя ссылка',
                 value: 'reference',
               },
               {
-                label: 'Custom URL',
+                label: 'Внешний URL',
                 value: 'custom',
               },
             ],
@@ -57,7 +59,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
           },
           {
             name: 'newTab',
-            label: 'Open in new tab',
+            label: 'Открывать в новой вкладке',
             type: 'checkbox',
             admin: {
               width: '50%',
@@ -74,7 +76,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
   const linkTypes: Field[] = [
     {
       name: 'reference',
-      label: 'Document to link to',
+      label: 'Документ, на который нужно сослаться',
       type: 'relationship',
       relationTo: ['pages'],
       required: true,
@@ -85,7 +87,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
     },
     {
       name: 'url',
-      label: 'Custom URL',
+      label: 'Внешний URL',
       type: 'text',
       required: true,
       admin: {
@@ -109,7 +111,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
         ...linkTypes,
         {
           name: 'label',
-          label: 'Label',
+          label: 'Название',
           type: 'text',
           required: true,
           admin: {
@@ -118,7 +120,7 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
         },
         {
           name: 'icon',
-          label: 'Icon',
+          label: 'Иконка',
           type: 'upload',
           relationTo: 'media',
         },
@@ -141,11 +143,12 @@ const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = 
 
     linkResult.fields.push({
       name: 'appearance',
+      label: 'Внешний вид',
       type: 'select',
       defaultValue: 'default',
       options: appearanceOptionsToUse,
       admin: {
-        description: 'Choose how the link should be rendered.',
+        description: 'Выберите стиль отображения ссылки.',
       },
     })
   }

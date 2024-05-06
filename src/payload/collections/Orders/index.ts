@@ -6,10 +6,13 @@ import { adminsOrOrderedBy } from './access/adminsOrOrderedBy'
 import { clearUserCart } from './hooks/clearUserCart'
 import { populateOrderedBy } from './hooks/populateOrderedBy'
 import { updateUserPurchases } from './hooks/updateUserPurchases'
-import { LinkToPaymentIntent } from './ui/LinkToPaymentIntent'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
+  labels: {
+    singular: 'документа',
+    plural: 'Заказы',
+  },
   admin: {
     useAsTitle: 'createdAt',
     defaultColumns: ['createdAt', 'orderedBy'],
@@ -27,6 +30,7 @@ export const Orders: CollectionConfig = {
   fields: [
     {
       name: 'orderedBy',
+      label: 'Заказано',
       type: 'relationship',
       relationTo: 'users',
       hooks: {
@@ -34,39 +38,33 @@ export const Orders: CollectionConfig = {
       },
     },
     {
-      name: 'stripePaymentIntentID',
-      label: 'Stripe Payment Intent ID',
-      type: 'text',
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: LinkToPaymentIntent,
-        },
-      },
-    },
-    {
       name: 'total',
+      label: 'Итого',
       type: 'number',
       required: true,
       min: 0,
     },
     {
       name: 'items',
+      label: 'Элементы',
       type: 'array',
       fields: [
         {
           name: 'product',
+          label: 'Льгота',
           type: 'relationship',
           relationTo: 'products',
           required: true,
         },
         {
           name: 'price',
+          label: 'Цена',
           type: 'number',
           min: 0,
         },
         {
           name: 'quantity',
+          label: 'Количество',
           type: 'number',
           min: 0,
         },
