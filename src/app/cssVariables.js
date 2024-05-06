@@ -2,7 +2,7 @@
 
 module.exports = {
   breakpoints: {
-    s: 768,
+    s: 840,
     m: 1024,
     l: 1440,
   },

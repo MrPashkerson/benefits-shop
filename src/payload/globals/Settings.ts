@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload/types'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
+  label: 'Настройки',
   typescript: {
     interface: 'Settings',
   },
@@ -16,7 +17,7 @@ export const Settings: GlobalConfig = {
       name: 'productsPage',
       type: 'relationship',
       relationTo: 'pages',
-      label: 'Products page',
+      label: 'Страница льгот',
     },
   ],
 }

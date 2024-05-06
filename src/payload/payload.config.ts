@@ -17,8 +17,9 @@ import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
 import Products from './collections/Products'
 import Users from './collections/Users'
-import BeforeDashboard from './components/BeforeDashboard'
-import BeforeLogin from './components/BeforeLogin'
+import beforeDashboard from './components/BeforeDashboard'
+import CustomIcon from './components/CustomIcon'
+import CustomLogo from './components/CustomLogo'
 import { createPaymentIntent } from './endpoints/create-payment-intent'
 import { customersProxy } from './endpoints/customers'
 import { productsProxy } from './endpoints/products'
@@ -28,9 +29,10 @@ import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
 import { priceUpdated } from './stripe/webhooks/priceUpdated'
 import { productUpdated } from './stripe/webhooks/productUpdated'
+import {checkPages} from "./endpoints/ensure-collection-pages-not-empty";
 
 const generateTitle: GenerateTitle = () => {
-  return 'My Store'
+  return 'Магазин Льгот'
 }
 
 const mockModulePath = path.resolve(__dirname, './emptyModuleMock.js')
@@ -41,20 +43,30 @@ dotenv.config({
 
 export default buildConfig({
   admin: {
+    autoLogin: {
+      email: 'pavelromanov122^@gmail.com',
+      password: 'toor',
+    },
     user: Users.slug,
     bundler: webpackBundler(), // bundler-config
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
-      beforeLogin: [BeforeLogin],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: [BeforeDashboard],
+      beforeDashboard: [beforeDashboard],
+      graphics: {
+        Logo: CustomLogo,
+        Icon: CustomIcon,
+      },
     },
+    meta: {
+      favicon: 'public/favicon.ico',
+    },
+    dateFormat: 'HH:mm dd-LL-yyyy',
     webpack: config => {
       return {
         ...config,
         resolve: {
+          fallback: {
+            util: require.resolve('util/'),
+          },
           ...config.resolve,
           alias: {
             ...config.resolve?.alias,
@@ -64,6 +76,8 @@ export default buildConfig({
               mockModulePath,
             [path.resolve(__dirname, 'collections/Users/endpoints/customer')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/create-payment-intent')]: mockModulePath,
+            [path.resolve(__dirname, 'endpoints/ensure-collection-pages-not-empty.ts')]:
+              mockModulePath,
             [path.resolve(__dirname, 'endpoints/customers')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/products')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/seed')]: mockModulePath,
@@ -111,8 +125,11 @@ export default buildConfig({
       method: 'get',
       handler: productsProxy,
     },
-    // The seed endpoint is used to populate the database with some example data
-    // You should delete this endpoint before deploying your site to production
+    {
+      path: '/check-pages',
+      method: 'get',
+      handler: checkPages,
+    },
     {
       path: '/seed',
       method: 'get',
