@@ -4,6 +4,8 @@ import type { Payload } from 'payload'
 
 import { cartPage } from './cart-page'
 import { home } from './home'
+import { footerIcon1 } from './footer/x'
+import { footerIcon2 } from './footer/linkedin'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { image3 } from './image-3'
@@ -50,6 +52,12 @@ export const seed = async (payload: Payload): Promise<void> => {
         data: {},
       }),
     ), // eslint-disable-line function-paren-newline
+    ...globals.map(async global =>
+      payload.updateGlobal({
+        slug: global as 'footer',
+        data: {},
+      }),
+    ), // eslint-disable-line function-paren-newline
   ])
 
   payload.logger.info(`— Seeding media...`)
@@ -88,19 +96,37 @@ export const seed = async (payload: Payload): Promise<void> => {
     await payload.create({
       collection: 'categories',
       data: {
-        title: 'Apparel',
+        title: 'Здоровье',
       },
     }),
     await payload.create({
       collection: 'categories',
       data: {
-        title: 'E-books',
+        title: 'Транспорт',
       },
     }),
     await payload.create({
       collection: 'categories',
       data: {
-        title: 'Online courses',
+        title: 'Дом и быт',
+      },
+    }),
+    await payload.create({
+      collection: 'categories',
+      data: {
+        title: 'Еда',
+      },
+    }),
+    await payload.create({
+      collection: 'categories',
+      data: {
+        title: 'Путешествия',
+      },
+    }),
+    await payload.create({
+      collection: 'categories',
+      data: {
+        title: 'Красота',
       },
     }),
   ])
@@ -180,7 +206,7 @@ export const seed = async (payload: Payload): Promise<void> => {
 
   payload.logger.info(`— Seeding home page...`)
 
-  await payload.create({
+  const homePageDoc = await payload.create({
     collection: 'pages',
     data: JSON.parse(
       JSON.stringify(home)
@@ -219,9 +245,69 @@ export const seed = async (payload: Payload): Promise<void> => {
             type: 'reference',
             reference: {
               relationTo: 'pages',
+              value: homePageDoc.id,
+            },
+            label: 'Главная',
+          },
+        },
+        {
+          link: {
+            type: 'reference',
+            reference: {
+              relationTo: 'pages',
               value: productsPageDoc.id,
             },
-            label: 'Магазин',
+            label: 'Каталог',
+          },
+        },
+      ],
+    },
+  })
+
+  payload.logger.info(`— Seeding footer...`)
+
+  const [footerIconX, footerIconLinkedIn] = await Promise.all([
+    await payload.create({
+      collection: 'media',
+      filePath: path.resolve(__dirname, './footer/x.svg'),
+      data: footerIcon1,
+    }),
+    await payload.create({
+      collection: 'media',
+      filePath: path.resolve(__dirname, './footer/linkedin.svg'),
+      data: footerIcon2,
+    }),
+  ])
+
+  let footerIconXID = footerIconX.id
+  let footerIconLinkedInID = footerIconLinkedIn.id
+
+  if (payload.db.defaultIDType === 'text') {
+    footerIconXID = `"${footerIconXID}"`
+    footerIconLinkedInID = `"${footerIconLinkedInID}"`
+  }
+
+  await payload.updateGlobal({
+    slug: 'footer',
+    data: {
+      copyright: '© Все права защищены 2024',
+      navItems: [
+        {
+          link: {
+            type: 'custom',
+            newTab: true,
+            url: 'https://x.com/',
+            icon: footerIconXID,
+            label: 'X',
+          },
+        },
+        {
+          link: {
+            type: 'custom',
+            newTab: true,
+            url: 'https://linkedin.com/',
+            icon: footerIconLinkedInID,
+            label: 'LinkedIn',
           },
         },
       ],

@@ -5,7 +5,6 @@ import nestedDocs from '@payloadcms/plugin-nested-docs'
 import redirects from '@payloadcms/plugin-redirects'
 import seo from '@payloadcms/plugin-seo'
 import type { GenerateTitle } from '@payloadcms/plugin-seo/types'
-import stripePlugin from '@payloadcms/plugin-stripe'
 import { slateEditor } from '@payloadcms/richtext-slate' // editor-import
 import dotenv from 'dotenv'
 import path from 'path'
@@ -21,15 +20,11 @@ import beforeDashboard from './components/BeforeDashboard'
 import CustomIcon from './components/CustomIcon'
 import CustomLogo from './components/CustomLogo'
 import { createPaymentIntent } from './endpoints/create-payment-intent'
-import { customersProxy } from './endpoints/customers'
 import { checkPages } from './endpoints/ensure-collection-pages-not-empty'
-import { productsProxy } from './endpoints/products'
 import { seed } from './endpoints/seed'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
-import { priceUpdated } from './stripe/webhooks/priceUpdated'
-import { productUpdated } from './stripe/webhooks/productUpdated'
 
 const generateTitle: GenerateTitle = () => {
   return 'Магазин Льгот'
@@ -57,7 +52,7 @@ export default buildConfig({
       },
     },
     meta: {
-      favicon: 'public/favicon.ico',
+      favicon: '../public/favicon.ico',
     },
     dateFormat: 'dd-LL-yyyy HH:mm',
     webpack: config => {
@@ -71,17 +66,9 @@ export default buildConfig({
           alias: {
             ...config.resolve?.alias,
             dotenv: path.resolve(__dirname, './dotenv.js'),
-            [path.resolve(__dirname, 'collections/Products/hooks/beforeChange')]: mockModulePath,
-            [path.resolve(__dirname, 'collections/Users/hooks/createStripeCustomer')]:
-              mockModulePath,
-            [path.resolve(__dirname, 'collections/Users/endpoints/customer')]: mockModulePath,
-            [path.resolve(__dirname, 'endpoints/create-payment-intent')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/ensure-collection-pages-not-empty.ts')]:
               mockModulePath,
-            [path.resolve(__dirname, 'endpoints/customers')]: mockModulePath,
-            [path.resolve(__dirname, 'endpoints/products')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/seed')]: mockModulePath,
-            stripe: mockModulePath,
             express: mockModulePath,
           },
         },
@@ -103,28 +90,9 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
-  cors: ['https://checkout.stripe.com', process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(
-    Boolean,
-  ),
-  csrf: ['https://checkout.stripe.com', process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(
-    Boolean,
-  ),
+  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
-    {
-      path: '/create-payment-intent',
-      method: 'post',
-      handler: createPaymentIntent,
-    },
-    {
-      path: '/stripe/customers',
-      method: 'get',
-      handler: customersProxy,
-    },
-    {
-      path: '/stripe/products',
-      method: 'get',
-      handler: productsProxy,
-    },
     {
       path: '/check-pages',
       method: 'get',
@@ -137,17 +105,6 @@ export default buildConfig({
     },
   ],
   plugins: [
-    stripePlugin({
-      stripeSecretKey: process.env.STRIPE_SECRET_KEY || '',
-      isTestKey: Boolean(process.env.PAYLOAD_PUBLIC_STRIPE_IS_TEST_KEY),
-      stripeWebhooksEndpointSecret: process.env.STRIPE_WEBHOOKS_SIGNING_SECRET,
-      rest: false,
-      webhooks: {
-        'product.created': productUpdated,
-        'product.updated': productUpdated,
-        'price.updated': priceUpdated,
-      },
-    }),
     redirects({
       collections: ['pages', 'products'],
     }),

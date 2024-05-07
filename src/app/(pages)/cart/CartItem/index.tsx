@@ -39,16 +39,18 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
       <Link href={`/products/${product.slug}`} className={classes.mediaWrapper}>
         {!metaImage && <span>Нет изображения</span>}
         {metaImage && typeof metaImage !== 'string' && (
-          <Media className={classes.media} imgClassName={classes.image} resource={metaImage} fill />
+          <Media className={classes.media} imgClassName={classes.image} resource={metaImage} fill/>
         )}
       </Link>
 
-      <div className={classes.itemDetails}>
-        <div className={classes.titleWrapper}>
-          <h6>{title}</h6>
-          <Price product={product} button={false} />
-        </div>
+      <div className={classes.titleWrapper}>
+        <h6>{title}</h6>
+        <p>
+          Стоимость <Price product={product} button={false}/>
+        </p>
+      </div>
 
+      <div className={classes.itemDetails}>
         <div className={classes.quantity}>
           <div className={classes.quantityBtn} onClick={decrementQty}>
             <Image
@@ -80,8 +82,8 @@ const CartItem = ({ product, title, metaImage, qty, addItemToCart }) => {
       </div>
 
       <div className={classes.subtotalWrapper}>
-        <Price product={product} button={false} quantity={quantity} />
-        <RemoveFromCartButton product={product} />
+        <Price product={product} button={false} quantity={quantity}/>
+        <RemoveFromCartButton product={product}/>
       </div>
     </li>
   )

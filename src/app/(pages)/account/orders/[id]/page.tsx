@@ -46,19 +46,16 @@ export default async function Order({ params: { id } }) {
   return (
     <div>
       <h5>
-        {`Order`}
+        {`Заказ`}
         <span className={classes.id}>{` ${order.id}`}</span>
       </h5>
       <div className={classes.itemMeta}>
         <p>{`ID: ${order.id}`}</p>
-        <p>{`Payment Intent: ${order.stripePaymentIntentID}`}</p>
-        <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
+        <p>{`Заказано: ${formatDateTime(order.createdAt)}`}</p>
         <p className={classes.total}>
-          {'Total: '}
-          {new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'usd',
-          }).format(order.total / 100)}
+          {'Итого: '}
+          {order.total}
+          {' б.'}
         </p>
       </div>
 
@@ -68,7 +65,7 @@ export default async function Order({ params: { id } }) {
             const {
               quantity,
               product,
-              product: { id, title, meta, stripeProductID },
+              product: { title, meta },
             } = item
 
             const metaImage = meta?.image
@@ -88,23 +85,12 @@ export default async function Order({ params: { id } }) {
                     )}
                   </Link>
                   <div className={classes.rowContent}>
-                    {!stripeProductID && (
-                      <p className={classes.warning}>
-                        {'This product is not yet connected to Stripe. To link this product, '}
-                        <Link
-                          href={`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/collections/products/${id}`}
-                        >
-                          edit this product in the admin panel
-                        </Link>
-                        {'.'}
-                      </p>
-                    )}
                     <h6 className={classes.title}>
                       <Link href={`/products/${product.slug}`} className={classes.titleLink}>
                         {title}
                       </Link>
                     </h6>
-                    <p>{`Quantity: ${quantity}`}</p>
+                    <p>{`Количество: ${quantity}`}</p>
                     <Price product={product} button={false} quantity={quantity} />
                   </div>
                 </div>

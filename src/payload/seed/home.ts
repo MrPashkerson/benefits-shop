@@ -1,12 +1,12 @@
 import type { Page } from '../payload-types'
 
 export const home: Partial<Page> = {
-  title: 'Home',
+  title: 'Главная',
   slug: 'home',
   _status: 'published',
   meta: {
-    title: 'Payload E-Commerce Template',
-    description: 'An open-source e-commerce store built with Payload and Next.js.',
+    title: 'Магазин Льгот',
+    description: 'Магазин гибких льгот для сотрудников.',
     image: '{{PRODUCT1_IMAGE}}',
   },
   hero: {
@@ -15,7 +15,7 @@ export const home: Partial<Page> = {
       {
         children: [
           {
-            text: 'Payload E-Commerce Store',
+            text: 'Магазин Льгот',
           },
         ],
         type: 'h1',

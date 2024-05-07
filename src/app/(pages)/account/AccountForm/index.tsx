@@ -10,6 +10,8 @@ import { Message } from '../../../_components/Message'
 import { useAuth } from '../../../_providers/Auth'
 
 import classes from './index.module.scss'
+import Image from "next/image";
+import Link from "next/link";
 
 type FormData = {
   email: string
@@ -53,7 +55,7 @@ const AccountForm: React.FC = () => {
         if (response.ok) {
           const json = await response.json()
           setUser(json.doc)
-          setSuccess('Successfully updated account.')
+          setSuccess('Данные обновлены.')
           setError('')
           setChangePassword(false)
           reset({
@@ -63,7 +65,7 @@ const AccountForm: React.FC = () => {
             passwordConfirm: '',
           })
         } else {
-          setError('There was a problem updating your account.')
+          setError('Произошла ощибка во время обновления данных.')
         }
       }
     },
@@ -95,45 +97,42 @@ const AccountForm: React.FC = () => {
       <Message error={error} success={success} className={classes.message} />
       {!changePassword ? (
         <Fragment>
+          <p>
+            <button
+              type="button"
+              className={classes.changePassword}
+              onClick={() => setChangePassword(!changePassword)}
+            >
+              <u>Нажмите здесь</u>, если хотите изменить пароль.
+            </button>
+          </p>
+
           <Input
             name="email"
-            label="Email Address"
+            label="Email"
             required
             register={register}
             error={errors.email}
             type="email"
           />
-          <Input name="name" label="Name" register={register} error={errors.name} />
-
-          <p>
-            {'Change your account details below, or '}
-            <button
-              type="button"
-              className={classes.changePassword}
-              onClick={() => setChangePassword(!changePassword)}
-            >
-              click here
-            </button>
-            {' to change your password.'}
-          </p>
+          <Input name="name" label="Имя" register={register} error={errors.name} />
         </Fragment>
       ) : (
         <Fragment>
           <p>
-            {'Change your password below, or '}
             <button
               type="button"
               className={classes.changePassword}
               onClick={() => setChangePassword(!changePassword)}
             >
-              cancel
+              <Image src="/assets/icons/arrow-left.svg" alt="left arrow" width={18} height={18} />
+              <p>Назад</p>
             </button>
-            .
           </p>
           <Input
             name="password"
             type="password"
-            label="Password"
+            label="Новый пароль"
             required
             register={register}
             error={errors.password}
@@ -141,7 +140,7 @@ const AccountForm: React.FC = () => {
           <Input
             name="passwordConfirm"
             type="password"
-            label="Confirm Password"
+            label="Повторите пароль"
             required
             register={register}
             validate={value => value === password.current || 'The passwords do not match'}
@@ -151,7 +150,7 @@ const AccountForm: React.FC = () => {
       )}
       <Button
         type="submit"
-        label={isLoading ? 'Processing' : changePassword ? 'Change Password' : 'Update Account'}
+        label={isLoading ? 'Обработка' : changePassword ? 'Сохранить' : 'Сохранить'}
         disabled={isLoading}
         appearance="primary"
         className={classes.submit}

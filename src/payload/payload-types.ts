@@ -287,7 +287,7 @@ export interface Product {
           }
       )[]
     | null;
-  price?: number | null;
+  price: number;
   categories?: (string | null) | Category;
   relatedProducts?: (string | Product)[] | null;
   slug?: string | null;
@@ -319,6 +319,7 @@ export interface Order {
 export interface User {
   id: string;
   name?: string | null;
+  credits: number;
   roles?: ('admin' | 'customer')[] | null;
   purchases?: (string | Product)[] | null;
   cart?: {
@@ -327,6 +328,7 @@ export interface User {
   skipSync?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;

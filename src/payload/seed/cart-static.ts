@@ -10,7 +10,7 @@ export const staticCart: Page = {
   meta: {
     title: 'Корзина',
     description:
-      'Your cart will sync to your user profile so you can continue shopping from any device.',
+      'Ваша корзина будет синхронизирована с вашим профилем пользователя, чтобы вы могли продолжать покупки с любого устройства.',
   },
   hero: {
     type: 'lowImpact',

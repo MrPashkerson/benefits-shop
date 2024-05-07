@@ -6,7 +6,7 @@ export const Media: CollectionConfig = {
   slug: 'media',
   labels: {
     plural: 'Медиафайлы',
-    singular: 'документа',
+    singular: 'медиафайл',
   },
   upload: {
     staticDir: path.resolve(__dirname, '../../../media'),

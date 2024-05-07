@@ -7,7 +7,7 @@ import richText from '../../fields/richText'
 const columnFields: Field[] = [
   {
     name: 'size',
-    label: 'Занимаемы размер на странице',
+    label: 'Занимаемые размер на странице',
     type: 'select',
     defaultValue: 'oneThird',
     options: [
@@ -32,6 +32,7 @@ const columnFields: Field[] = [
   richText(),
   {
     name: 'enableLink',
+    label: 'Добавить ссылку',
     type: 'checkbox',
   },
   link({

@@ -6,6 +6,7 @@ export const ME_QUERY = `query {
       id
       email
       name
+      credits
       ${CART}
       roles
     }

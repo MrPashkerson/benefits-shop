@@ -7,8 +7,8 @@ import { ContentBlock } from '../../_blocks/Content'
 import { MediaBlock } from '../../_blocks/MediaBlock'
 import { RelatedProducts, type RelatedProductsProps } from '../../_blocks/RelatedProducts'
 import { toKebabCase } from '../../_utilities/toKebabCase'
-import { BackgroundColor } from '../BackgroundColor/index'
-import { VerticalPadding, VerticalPaddingOptions } from '../VerticalPadding/index'
+import { BackgroundColor } from '../BackgroundColor'
+import { VerticalPadding, VerticalPaddingOptions } from '../VerticalPadding'
 
 const blockComponents = {
   cta: CallToActionBlock,

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import { Page } from '../../../payload/payload-types'
 import { CMSLink } from '../../_components/Link'

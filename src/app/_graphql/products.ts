@@ -1,5 +1,5 @@
 import { ARCHIVE_BLOCK, CALL_TO_ACTION, CONTENT, MEDIA_BLOCK } from './blocks'
-import { PRODUCT_CATEGORIES} from './categories'
+import { PRODUCT_CATEGORIES } from './categories'
 import { META } from './meta'
 
 export const PRODUCTS = `
@@ -18,7 +18,6 @@ export const PRODUCT = `
       docs {
         id
         title
-        stripeProductID
         ${PRODUCT_CATEGORIES}
         layout {
           ${CALL_TO_ACTION}
@@ -26,8 +25,7 @@ export const PRODUCT = `
           ${MEDIA_BLOCK}
           ${ARCHIVE_BLOCK}
         }
-        priceJSON
-        enablePaywall
+        price
         relatedProducts {
           id
           slug
@@ -35,21 +33,6 @@ export const PRODUCT = `
           ${META}
         }
         ${META}
-      }
-    }
-  }
-`
-
-export const PRODUCT_PAYWALL = `
-  query Product($slug: String, $draft: Boolean) {
-    Products(where: { slug: { equals: $slug}}, limit: 1, draft: $draft) {
-      docs {
-        paywall {
-          ${CALL_TO_ACTION}
-          ${CONTENT}
-          ${MEDIA_BLOCK}
-          ${ARCHIVE_BLOCK}
-        }
       }
     }
   }

@@ -21,6 +21,8 @@ type Query {
   User(id: String!, draft: Boolean): User
   Users(draft: Boolean, where: User_where, limit: Int, page: Int, sort: String): Users
   docAccessUser(id: String!): usersDocAccess
+  versionUser(id: String): UserVersion
+  versionsUsers(where: versionsUser_where, limit: Int, page: Int, sort: String): versionsUsers
   meUser: usersMe
   initializedUser: Boolean
   Redirect(id: String!, draft: Boolean): Redirect
@@ -3637,7 +3639,6 @@ input Product_price_operator {
   greater_than: Float
   less_than_equal: Float
   less_than: Float
-  exists: Boolean
 }
 
 input Product_categories_operator {
@@ -4507,7 +4508,6 @@ input versionsProduct_version__price_operator {
   greater_than: Float
   less_than_equal: Float
   less_than: Float
-  exists: Boolean
 }
 
 input versionsProduct_version__categories_operator {
@@ -4703,20 +4703,22 @@ type Order {
 type User {
   id: String
   name: String
+  credits: Float
   roles: [User_roles!]
   purchases: [Product!]
   cart: User_Cart
   skipSync: Boolean
   updatedAt: DateTime
   createdAt: DateTime
-  email: EmailAddress!
+  _status: User__status
+  email: EmailAddress
   resetPasswordToken: String
   resetPasswordExpiration: DateTime
   salt: String
   hash: String
   loginAttempts: Float
   lockUntil: DateTime
-  password: String!
+  password: String
 }
 
 enum User_roles {
@@ -4732,6 +4734,11 @@ type CartItems {
   product: Product
   quantity: Float
   id: String
+}
+
+enum User__status {
+  draft
+  published
 }
 
 """
@@ -6040,6 +6047,7 @@ type Users {
 
 input User_where {
   name: User_name_operator
+  credits: User_credits_operator
   roles: User_roles_operator
   purchases: User_purchases_operator
   cart__items__product: User_cart__items__product_operator
@@ -6048,6 +6056,7 @@ input User_where {
   skipSync: User_skipSync_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
+  _status: User__status_operator
   email: User_email_operator
   id: User_id_operator
   AND: [User_where_and]
@@ -6063,6 +6072,15 @@ input User_name_operator {
   not_in: [String]
   all: [String]
   exists: Boolean
+}
+
+input User_credits_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
 }
 
 input User_roles_operator {
@@ -6146,6 +6164,20 @@ input User_createdAt_operator {
   exists: Boolean
 }
 
+input User__status_operator {
+  equals: User__status_Input
+  not_equals: User__status_Input
+  in: [User__status_Input]
+  not_in: [User__status_Input]
+  all: [User__status_Input]
+  exists: Boolean
+}
+
+enum User__status_Input {
+  draft
+  published
+}
+
 input User_email_operator {
   equals: EmailAddress
   not_equals: EmailAddress
@@ -6169,6 +6201,7 @@ input User_id_operator {
 
 input User_where_and {
   name: User_name_operator
+  credits: User_credits_operator
   roles: User_roles_operator
   purchases: User_purchases_operator
   cart__items__product: User_cart__items__product_operator
@@ -6177,6 +6210,7 @@ input User_where_and {
   skipSync: User_skipSync_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
+  _status: User__status_operator
   email: User_email_operator
   id: User_id_operator
   AND: [User_where_and]
@@ -6185,6 +6219,7 @@ input User_where_and {
 
 input User_where_or {
   name: User_name_operator
+  credits: User_credits_operator
   roles: User_roles_operator
   purchases: User_purchases_operator
   cart__items__product: User_cart__items__product_operator
@@ -6193,6 +6228,7 @@ input User_where_or {
   skipSync: User_skipSync_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
+  _status: User__status_operator
   email: User_email_operator
   id: User_id_operator
   AND: [User_where_and]
@@ -6206,16 +6242,19 @@ type usersDocAccess {
   update: UsersUpdateDocAccess
   delete: UsersDeleteDocAccess
   unlock: UsersUnlockDocAccess
+  readVersions: UsersReadVersionsDocAccess
 }
 
 type UsersDocAccessFields {
   name: UsersDocAccessFields_name
+  credits: UsersDocAccessFields_credits
   roles: UsersDocAccessFields_roles
   purchases: UsersDocAccessFields_purchases
   cart: UsersDocAccessFields_cart
   skipSync: UsersDocAccessFields_skipSync
   updatedAt: UsersDocAccessFields_updatedAt
   createdAt: UsersDocAccessFields_createdAt
+  _status: UsersDocAccessFields__status
   email: UsersDocAccessFields_email
   password: UsersDocAccessFields_password
 }
@@ -6240,6 +6279,29 @@ type UsersDocAccessFields_name_Update {
 }
 
 type UsersDocAccessFields_name_Delete {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_credits {
+  create: UsersDocAccessFields_credits_Create
+  read: UsersDocAccessFields_credits_Read
+  update: UsersDocAccessFields_credits_Update
+  delete: UsersDocAccessFields_credits_Delete
+}
+
+type UsersDocAccessFields_credits_Create {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_credits_Read {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_credits_Update {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_credits_Delete {
   permission: Boolean!
 }
 
@@ -6485,6 +6547,29 @@ type UsersDocAccessFields_createdAt_Delete {
   permission: Boolean!
 }
 
+type UsersDocAccessFields__status {
+  create: UsersDocAccessFields__status_Create
+  read: UsersDocAccessFields__status_Read
+  update: UsersDocAccessFields__status_Update
+  delete: UsersDocAccessFields__status_Delete
+}
+
+type UsersDocAccessFields__status_Create {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields__status_Read {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields__status_Update {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields__status_Delete {
+  permission: Boolean!
+}
+
 type UsersDocAccessFields_email {
   create: UsersDocAccessFields_email_Create
   read: UsersDocAccessFields_email_Read
@@ -6554,6 +6639,403 @@ type UsersDeleteDocAccess {
 type UsersUnlockDocAccess {
   permission: Boolean!
   where: JSONObject
+}
+
+type UsersReadVersionsDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type UserVersion {
+  parent: User
+  version: UserVersion_Version
+  createdAt: DateTime
+  updatedAt: DateTime
+  latest: Boolean
+  id: String
+}
+
+type UserVersion_Version {
+  name: String
+  credits: Float
+  roles: [UserVersion_Version_roles!]
+  purchases: [Product!]
+  cart: UserVersion_Version_Cart
+  skipSync: Boolean
+  updatedAt: DateTime
+  createdAt: DateTime
+  _status: UserVersion_Version__status
+  email: EmailAddress
+  resetPasswordToken: String
+  resetPasswordExpiration: DateTime
+  salt: String
+  hash: String
+  loginAttempts: Float
+  lockUntil: DateTime
+  password: String
+}
+
+enum UserVersion_Version_roles {
+  admin
+  customer
+}
+
+type UserVersion_Version_Cart {
+  items: [CartItems!]
+}
+
+enum UserVersion_Version__status {
+  draft
+  published
+}
+
+type versionsUsers {
+  docs: [UserVersion]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input versionsUser_where {
+  parent: versionsUser_parent_operator
+  version__name: versionsUser_version__name_operator
+  version__credits: versionsUser_version__credits_operator
+  version__roles: versionsUser_version__roles_operator
+  version__purchases: versionsUser_version__purchases_operator
+  version__cart__items__product: versionsUser_version__cart__items__product_operator
+  version__cart__items__quantity: versionsUser_version__cart__items__quantity_operator
+  version__cart__items__id: versionsUser_version__cart__items__id_operator
+  version__skipSync: versionsUser_version__skipSync_operator
+  version__updatedAt: versionsUser_version__updatedAt_operator
+  version__createdAt: versionsUser_version__createdAt_operator
+  version___status: versionsUser_version___status_operator
+  version__email: versionsUser_version__email_operator
+  version__resetPasswordToken: versionsUser_version__resetPasswordToken_operator
+  version__resetPasswordExpiration: versionsUser_version__resetPasswordExpiration_operator
+  version__salt: versionsUser_version__salt_operator
+  version__hash: versionsUser_version__hash_operator
+  version__loginAttempts: versionsUser_version__loginAttempts_operator
+  version__lockUntil: versionsUser_version__lockUntil_operator
+  version__password: versionsUser_version__password_operator
+  createdAt: versionsUser_createdAt_operator
+  updatedAt: versionsUser_updatedAt_operator
+  latest: versionsUser_latest_operator
+  id: versionsUser_id_operator
+  AND: [versionsUser_where_and]
+  OR: [versionsUser_where_or]
+}
+
+input versionsUser_parent_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input versionsUser_version__name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsUser_version__credits_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+}
+
+input versionsUser_version__roles_operator {
+  equals: versionsUser_version__roles_Input
+  not_equals: versionsUser_version__roles_Input
+  in: [versionsUser_version__roles_Input]
+  not_in: [versionsUser_version__roles_Input]
+  all: [versionsUser_version__roles_Input]
+  exists: Boolean
+}
+
+enum versionsUser_version__roles_Input {
+  admin
+  customer
+}
+
+input versionsUser_version__purchases_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input versionsUser_version__cart__items__product_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input versionsUser_version__cart__items__quantity_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input versionsUser_version__cart__items__id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsUser_version__skipSync_operator {
+  equals: Boolean
+  not_equals: Boolean
+  exists: Boolean
+}
+
+input versionsUser_version__updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsUser_version__createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsUser_version___status_operator {
+  equals: versionsUser_version___status_Input
+  not_equals: versionsUser_version___status_Input
+  in: [versionsUser_version___status_Input]
+  not_in: [versionsUser_version___status_Input]
+  all: [versionsUser_version___status_Input]
+  exists: Boolean
+}
+
+enum versionsUser_version___status_Input {
+  draft
+  published
+}
+
+input versionsUser_version__email_operator {
+  equals: EmailAddress
+  not_equals: EmailAddress
+  like: EmailAddress
+  contains: EmailAddress
+  in: [EmailAddress]
+  not_in: [EmailAddress]
+  all: [EmailAddress]
+}
+
+input versionsUser_version__resetPasswordToken_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsUser_version__resetPasswordExpiration_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsUser_version__salt_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsUser_version__hash_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsUser_version__loginAttempts_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input versionsUser_version__lockUntil_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsUser_version__password_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input versionsUser_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsUser_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsUser_latest_operator {
+  equals: Boolean
+  not_equals: Boolean
+  exists: Boolean
+}
+
+input versionsUser_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsUser_where_and {
+  parent: versionsUser_parent_operator
+  version__name: versionsUser_version__name_operator
+  version__credits: versionsUser_version__credits_operator
+  version__roles: versionsUser_version__roles_operator
+  version__purchases: versionsUser_version__purchases_operator
+  version__cart__items__product: versionsUser_version__cart__items__product_operator
+  version__cart__items__quantity: versionsUser_version__cart__items__quantity_operator
+  version__cart__items__id: versionsUser_version__cart__items__id_operator
+  version__skipSync: versionsUser_version__skipSync_operator
+  version__updatedAt: versionsUser_version__updatedAt_operator
+  version__createdAt: versionsUser_version__createdAt_operator
+  version___status: versionsUser_version___status_operator
+  version__email: versionsUser_version__email_operator
+  version__resetPasswordToken: versionsUser_version__resetPasswordToken_operator
+  version__resetPasswordExpiration: versionsUser_version__resetPasswordExpiration_operator
+  version__salt: versionsUser_version__salt_operator
+  version__hash: versionsUser_version__hash_operator
+  version__loginAttempts: versionsUser_version__loginAttempts_operator
+  version__lockUntil: versionsUser_version__lockUntil_operator
+  version__password: versionsUser_version__password_operator
+  createdAt: versionsUser_createdAt_operator
+  updatedAt: versionsUser_updatedAt_operator
+  latest: versionsUser_latest_operator
+  id: versionsUser_id_operator
+  AND: [versionsUser_where_and]
+  OR: [versionsUser_where_or]
+}
+
+input versionsUser_where_or {
+  parent: versionsUser_parent_operator
+  version__name: versionsUser_version__name_operator
+  version__credits: versionsUser_version__credits_operator
+  version__roles: versionsUser_version__roles_operator
+  version__purchases: versionsUser_version__purchases_operator
+  version__cart__items__product: versionsUser_version__cart__items__product_operator
+  version__cart__items__quantity: versionsUser_version__cart__items__quantity_operator
+  version__cart__items__id: versionsUser_version__cart__items__id_operator
+  version__skipSync: versionsUser_version__skipSync_operator
+  version__updatedAt: versionsUser_version__updatedAt_operator
+  version__createdAt: versionsUser_version__createdAt_operator
+  version___status: versionsUser_version___status_operator
+  version__email: versionsUser_version__email_operator
+  version__resetPasswordToken: versionsUser_version__resetPasswordToken_operator
+  version__resetPasswordExpiration: versionsUser_version__resetPasswordExpiration_operator
+  version__salt: versionsUser_version__salt_operator
+  version__hash: versionsUser_version__hash_operator
+  version__loginAttempts: versionsUser_version__loginAttempts_operator
+  version__lockUntil: versionsUser_version__lockUntil_operator
+  version__password: versionsUser_version__password_operator
+  createdAt: versionsUser_createdAt_operator
+  updatedAt: versionsUser_updatedAt_operator
+  latest: versionsUser_latest_operator
+  id: versionsUser_id_operator
+  AND: [versionsUser_where_and]
+  OR: [versionsUser_where_or]
 }
 
 type usersMe {
@@ -10273,16 +10755,19 @@ type usersAccess {
   update: UsersUpdateAccess
   delete: UsersDeleteAccess
   unlock: UsersUnlockAccess
+  readVersions: UsersReadVersionsAccess
 }
 
 type UsersFields {
   name: UsersFields_name
+  credits: UsersFields_credits
   roles: UsersFields_roles
   purchases: UsersFields_purchases
   cart: UsersFields_cart
   skipSync: UsersFields_skipSync
   updatedAt: UsersFields_updatedAt
   createdAt: UsersFields_createdAt
+  _status: UsersFields__status
   email: UsersFields_email
   password: UsersFields_password
 }
@@ -10307,6 +10792,29 @@ type UsersFields_name_Update {
 }
 
 type UsersFields_name_Delete {
+  permission: Boolean!
+}
+
+type UsersFields_credits {
+  create: UsersFields_credits_Create
+  read: UsersFields_credits_Read
+  update: UsersFields_credits_Update
+  delete: UsersFields_credits_Delete
+}
+
+type UsersFields_credits_Create {
+  permission: Boolean!
+}
+
+type UsersFields_credits_Read {
+  permission: Boolean!
+}
+
+type UsersFields_credits_Update {
+  permission: Boolean!
+}
+
+type UsersFields_credits_Delete {
   permission: Boolean!
 }
 
@@ -10552,6 +11060,29 @@ type UsersFields_createdAt_Delete {
   permission: Boolean!
 }
 
+type UsersFields__status {
+  create: UsersFields__status_Create
+  read: UsersFields__status_Read
+  update: UsersFields__status_Update
+  delete: UsersFields__status_Delete
+}
+
+type UsersFields__status_Create {
+  permission: Boolean!
+}
+
+type UsersFields__status_Read {
+  permission: Boolean!
+}
+
+type UsersFields__status_Update {
+  permission: Boolean!
+}
+
+type UsersFields__status_Delete {
+  permission: Boolean!
+}
+
 type UsersFields_email {
   create: UsersFields_email_Create
   read: UsersFields_email_Read
@@ -10619,6 +11150,11 @@ type UsersDeleteAccess {
 }
 
 type UsersUnlockAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type UsersReadVersionsAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -11695,6 +12231,7 @@ type Mutation {
   createUser(data: mutationUserInput!, draft: Boolean): User
   updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean): User
   deleteUser(id: String!): User
+  restoreVersionUser(id: String): User
   refreshTokenUser(token: String): usersRefreshedUser
   logoutUser: String
   unlockUser(email: String!): Boolean!
@@ -11853,7 +12390,7 @@ input mutationProductInput {
   title: String!
   publishedOn: String
   layout: JSON
-  price: Float
+  price: Float!
   categories: String
   relatedProducts: [String]
   slug: String
@@ -11991,12 +12528,14 @@ input mutationCategoryUpdate_BreadcrumbsInput {
 
 input mutationUserInput {
   name: String
+  credits: Float!
   roles: [User_roles_MutationInput]
   purchases: [String]
   cart: mutationUser_CartInput
   skipSync: Boolean
   updatedAt: String
   createdAt: String
+  _status: User__status_MutationInput
   email: String!
   resetPasswordToken: String
   resetPasswordExpiration: String
@@ -12022,14 +12561,21 @@ input mutationUser_Cart_ItemsInput {
   id: String
 }
 
+enum User__status_MutationInput {
+  draft
+  published
+}
+
 input mutationUserUpdateInput {
   name: String
+  credits: Float
   roles: [UserUpdate_roles_MutationInput]
   purchases: [String]
   cart: mutationUserUpdate_CartInput
   skipSync: Boolean
   updatedAt: String
   createdAt: String
+  _status: UserUpdate__status_MutationInput
   email: String
   resetPasswordToken: String
   resetPasswordExpiration: String
@@ -12053,6 +12599,11 @@ input mutationUserUpdate_Cart_ItemsInput {
   product: String
   quantity: Float
   id: String
+}
+
+enum UserUpdate__status_MutationInput {
+  draft
+  published
 }
 
 type usersRefreshedUser {

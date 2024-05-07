@@ -7,7 +7,6 @@ import { Product, Product as ProductType } from '../../../../payload/payload-typ
 import { fetchDoc } from '../../../_api/fetchDoc'
 import { fetchDocs } from '../../../_api/fetchDocs'
 import { Blocks } from '../../../_components/Blocks'
-import { PaywallBlocks } from '../../../_components/PaywallBlocks'
 import { ProductHero } from '../../../_heros/Product'
 import { generateMeta } from '../../../_utilities/generateMeta'
 
@@ -35,32 +34,34 @@ export default async function Product({ params: { slug } }) {
   }
 
   const { relatedProducts } = product
+  console.log(relatedProducts)
 
   return (
     <>
       <ProductHero product={product} />
-      {product?.enablePaywall && <PaywallBlocks productSlug={slug as string} disableTopPadding />}
-      <Blocks
-        disableTopPadding
-        blocks={[
-          {
-            blockType: 'relatedProducts',
-            blockName: 'Вас может заинтересовать',
-            relationTo: 'products',
-            introContent: [
-              {
-                type: 'h3',
-                children: [
-                  {
-                    text: 'Вас может заинтересовать',
-                  },
-                ],
-              },
-            ],
-            docs: relatedProducts,
-          },
-        ]}
-      />
+      {relatedProducts.length !== 0 && (
+        <Blocks
+          disableTopPadding
+          blocks={[
+            {
+              blockType: 'relatedProducts',
+              blockName: 'Вас может заинтересовать',
+              relationTo: 'products',
+              introContent: [
+                {
+                  type: 'h3',
+                  children: [
+                    {
+                      text: 'Вас может заинтересовать',
+                    },
+                  ],
+                },
+              ],
+              docs: relatedProducts,
+            },
+          ]}
+        />
+      )}
     </>
   )
 }

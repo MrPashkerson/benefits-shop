@@ -38,13 +38,9 @@ export const AdminBar: React.FC<{
   return (
     <div className={[classes.adminBar, show && classes.show].filter(Boolean).join(' ')}>
       <Gutter className={classes.blockContainer}>
+        <p className={classes.userRole}>Администратор&nbsp;&nbsp;</p>
         <PayloadAdminBar
           {...adminBarProps}
-          // collection={collection}
-          // collectionLabels={{
-          //   singular: collection === 'products' ? 'Льготы' : 'Страница',
-          //   plural: collection === 'products' ? 'Льгот' : 'Страницы',
-          // }}
           key={user?.id} // use key to get the admin bar to re-run its `me` request
           cmsURL={process.env.NEXT_PUBLIC_SERVER_URL}
           className={classes.payloadAdminBar}
@@ -52,6 +48,7 @@ export const AdminBar: React.FC<{
             user: classes.user,
             logo: classes.logo,
             controls: classes.controls,
+            logout: classes.logout,
           }}
           logo={<Title />}
           style={{

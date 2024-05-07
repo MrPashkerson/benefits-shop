@@ -43,9 +43,9 @@ export default async function Orders() {
 
   return (
     <div>
-      <h5>My Orders</h5>
+      <h5>Мои заказы</h5>
       {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
-        <p className={classes.noOrders}>You have no orders.</p>
+        <p className={classes.noOrders}>У вас нет заказов.</p>
       )}
       <RenderParams />
       {orders && orders.length > 0 && (
@@ -57,20 +57,18 @@ export default async function Orders() {
                   <h6 className={classes.itemTitle}>{`Order ${order.id}`}</h6>
                   <div className={classes.itemMeta}>
                     <p>
-                      {'Total: '}
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'usd',
-                      }).format(order.total / 100)}
+                      {'Итого: '}
+                      {order.total}
+                      {' б.'}
                     </p>
-                    <p className={classes.orderDate}>{`Ordered On: ${formatDateTime(
+                    <p className={classes.orderDate}>{`Заказано: ${formatDateTime(
                       order.createdAt,
                     )}`}</p>
                   </div>
                 </div>
                 <Button
                   appearance="default"
-                  label="View Order"
+                  label="Просмотреть заказ"
                   className={classes.button}
                   el="link"
                   href={`/account/orders/${order.id}`}

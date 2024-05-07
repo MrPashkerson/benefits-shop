@@ -17,7 +17,9 @@
 .changePassword {
   all: unset;
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
+  display: flex;
+
 }
 
 .submit {

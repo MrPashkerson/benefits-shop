@@ -5,16 +5,12 @@ import Link from 'next/link'
 
 import { Page, Settings } from '../../../../payload/payload-types'
 import { Button } from '../../../_components/Button'
-import { HR } from '../../../_components/HR'
 import { LoadingShimmer } from '../../../_components/LoadingShimmer'
-import { Media } from '../../../_components/Media'
-import { Price } from '../../../_components/Price'
-import { RemoveFromCartButton } from '../../../_components/RemoveFromCartButton'
 import { useAuth } from '../../../_providers/Auth'
 import { useCart } from '../../../_providers/Cart'
+import CartItem from '../CartItem'
 
 import classes from './index.module.scss'
-import CartItem from "../CartItem";
 
 export const CartPage: React.FC<{
   settings: Settings
@@ -38,11 +34,13 @@ export const CartPage: React.FC<{
         <Fragment>
           {cartIsEmpty ? (
             <div className={classes.empty}>
-              Your cart is empty.
+              Корзина пуста.
               {typeof productsPage === 'object' && productsPage?.slug && (
                 <Fragment>
                   {' '}
-                  <Link href={`/${productsPage.slug}`}>Нажмите сюда</Link>
+                  <Link href={`/${productsPage.slug}`}>
+                    <u>Нажмите сюда</u>
+                  </Link>
                   {`, чтобы перейти в каталог.`}
                 </Fragment>
               )}
@@ -50,7 +48,7 @@ export const CartPage: React.FC<{
                 <Fragment>
                   {' '}
                   <Link href={`/login?redirect=%2Fcart`}>Войдите</Link>
-                  {`, чтобы увилеть сохранённую корзину.`}
+                  {`, чтобы увидеть сохранённую корзину.`}
                 </Fragment>
               )}
             </div>
@@ -61,11 +59,9 @@ export const CartPage: React.FC<{
                 <div className={classes.header}>
                   <p>Льготы</p>
                   <div className={classes.headerItemDetails}>
-                    <p></p>
-                    <p></p>
                     <p>Количество</p>
                   </div>
-                  <p className={classes.headersubtotal}>Subtotal</p>
+                  <p className={classes.headersubtotal}>Промежуточный итог</p>
                 </div>
                 {/* CART ITEM LIST */}
                 <ul className={classes.itemsList}>
@@ -74,7 +70,7 @@ export const CartPage: React.FC<{
                       const {
                         quantity,
                         product,
-                        product: { id, title, meta, stripeProductID },
+                        product: { title, meta },
                       } = item
 
                       const isLast = index === (cart?.items?.length || 0) - 1
@@ -98,23 +94,14 @@ export const CartPage: React.FC<{
 
               <div className={classes.summary}>
                 <div className={classes.row}>
-                  <h6 className={classes.cartTotal}>Summary</h6>
-                </div>
-
-                <div className={classes.row}>
-                  <p className={classes.cartTotal}>Delivery Charge</p>
-                  <p className={classes.cartTotal}>$0</p>
-                </div>
-
-                <div className={classes.row}>
-                  <p className={classes.cartTotal}>Grand Total</p>
-                  <p className={classes.cartTotal}>{cartTotal.formatted}</p>
+                  <h6 className={classes.cartTotal}>Итого</h6>
+                  <p className={classes.cartTotal}>{cartTotal.formatted} б.</p>
                 </div>
 
                 <Button
                   className={classes.checkoutButton}
                   href={user ? '/checkout' : '/login?redirect=%2Fcheckout'}
-                  label={user ? 'Checkout' : 'Login to checkout'}
+                  label={user ? 'Оформить заказ' : 'Войдите, чтобы продолжить'}
                   appearance="primary"
                 />
               </div>

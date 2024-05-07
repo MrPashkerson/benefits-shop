@@ -1,13 +1,13 @@
 import type { Page } from '../payload-types'
 
 export const cartPage: Partial<Page> = {
-  title: 'Cart',
+  title: 'Корзина',
   slug: 'cart',
   _status: 'published',
   meta: {
-    title: 'Cart',
+    title: 'Корзина',
     description:
-      'Your cart will sync to your user profile so you can continue shopping from any device.',
+      'Ваша корзина будет синхронизирована с вашим профилем пользователя, чтобы вы могли продолжать покупки с любого устройства.',
   },
   hero: {
     type: 'lowImpact',
@@ -18,7 +18,7 @@ export const cartPage: Partial<Page> = {
         type: 'h1',
         children: [
           {
-            text: 'Cart',
+            text: 'Корзина',
           },
         ],
       },
@@ -26,7 +26,7 @@ export const cartPage: Partial<Page> = {
         type: 'p',
         children: [
           {
-            text: 'This cart saves to local storage so you can continue shopping later. Once you authenticate with Payload, your cart will sync to your user profile so you can continue shopping from any device. This hero and the content below the cart are completely dynamic and ',
+            text: 'Корзина сохраняется в локальном хранилище, чтобы вы могли продолжить покупки позже. После аутентификации корзина будет синхронизирована с вашим профилем пользователя, и вы сможете продолжить покупки с любого устройства. Этот герой и содержимое под корзиной полностью динамичны и ',
           },
           {
             type: 'link',

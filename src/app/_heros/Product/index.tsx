@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import Link from 'next/link'
 
 import { Category, Product } from '../../../payload/payload-types'
 import { AddToCartButton } from '../../_components/AddToCartButton'
@@ -12,13 +11,10 @@ import classes from './index.module.scss'
 export const ProductHero: React.FC<{
   product: Product
 }> = ({ product }) => {
-  const {
-    id,
-    stripeProductID,
-    title,
-    categories,
-    meta: { image: metaImage, description } = {},
-  } = product
+  const { title, categories, meta: { image: metaImage, description } = {} } = product
+
+  const { title: categoryTitle } = categories as Category
+  const titleToUse = categoryTitle || 'Другое'
 
   return (
     <Gutter className={classes.productHero}>
@@ -34,24 +30,18 @@ export const ProductHero: React.FC<{
 
         <div className={classes.categoryWrapper}>
           <div className={classes.categories}>
-            {categories?.map((category, index) => {
-              const { title: categoryTitle } = category as Category
-
-              const titleToUse = categoryTitle || 'Другое'
-              const isLast = index === categories.length - 1
-
-              return (
-                <p key={index} className={classes.category}>
-                  {titleToUse} {!isLast && <Fragment>, &nbsp;</Fragment>}
-                  <span className={classes.separator}>|</span>
-                </p>
-              )
-            })}
+            <p className={classes.category}>
+              {titleToUse}
+              <span className={classes.separator}>|</span>
+            </p>
           </div>
           <p className={classes.stock}> В наличии</p>
         </div>
 
-        <Price product={product} button={false} />
+        <div className={classes.displayFlex}>
+          <p>Стоимость: &nbsp;</p>
+          <Price product={product} button={false} />
+        </div>
 
         <div className={classes.description}>
           <h6>Описание</h6>

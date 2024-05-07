@@ -17,7 +17,7 @@ export default async function Purchases() {
 
   return (
     <div>
-      <h5>Purchased Products</h5>
+      <h5>Мои покупки</h5>
       <div>
         {user?.purchases?.length || 0 > 0 ? (
           <ul className={classes.purchases}>
@@ -25,7 +25,7 @@ export default async function Purchases() {
               return (
                 <li key={index} className={classes.purchase}>
                   {typeof purchase === 'string' ? (
-                    <p>{purchase} Test</p>
+                    <p>{purchase} Тест</p>
                   ) : (
                     <Link href={`/products/${purchase.slug}`} className={classes.item}>
                       <div className={classes.mediaWrapper}>
@@ -39,7 +39,7 @@ export default async function Purchases() {
                       <div className={classes.itemDetails}>
                         <h6>{purchase.title}</h6>
                         <Price product={purchase} />
-                        <p className={classes.purchasedDate}>{`Purchased On: ${formatDateTime(
+                        <p className={classes.purchasedDate}>{`Куплено: ${formatDateTime(
                           purchase.createdAt,
                         )}`}</p>
                       </div>
@@ -50,7 +50,7 @@ export default async function Purchases() {
             })}
           </ul>
         ) : (
-          <div className={classes.noPurchases}>You have no purchases.</div>
+          <div className={classes.noPurchases}>У вас ещё не было покупок.</div>
         )}
       </div>
     </div>

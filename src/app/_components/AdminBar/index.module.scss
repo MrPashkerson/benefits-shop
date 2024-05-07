@@ -1,3 +1,5 @@
+@import '../../_css/common';
+
 .adminBar {
   z-index: 10;
   width: 100%;
@@ -18,6 +20,12 @@
 
 .payloadAdminBar {
   color: var(--theme-text) !important;
+  display: flex;
+
+  @include small-break {
+    flex-direction: column;
+    justify-content: start;
+  }
 }
 
 .show {
@@ -39,8 +47,28 @@
   margin-right: 10px !important;
 }
 
+.logout {
+  visibility: hidden;
+}
+
+.logout:after {
+  content: 'Выйти';
+  visibility: visible;
+
+  @include small-break {
+    display: block;
+    position: absolute;
+    top: 42.5px;
+  }
+}
+
 .blockContainer {
   position: relative;
+  display: flex;
+
+  @include small-break {
+    flex-direction: column;
+  }
 }
 
 .hr {
@@ -50,4 +78,9 @@
   width: 100%;
   background-color: var(--light-gray);
   height: 2px;
+}
+
+.userRole {
+  text-align: center;
+  font-size: 14px;
 }
