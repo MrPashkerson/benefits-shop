@@ -12,7 +12,7 @@ export const cartPage: Partial<Page> = {
   hero: {
     type: 'lowImpact',
     links: [],
-    media: '',
+    media: null,
     richText: [
       {
         type: 'h1',
@@ -26,17 +26,7 @@ export const cartPage: Partial<Page> = {
         type: 'p',
         children: [
           {
-            text: 'Корзина сохраняется в локальном хранилище, чтобы вы могли продолжить покупки позже. После аутентификации корзина будет синхронизирована с вашим профилем пользователя, и вы сможете продолжить покупки с любого устройства. Этот герой и содержимое под корзиной полностью динамичны и ',
-          },
-          {
-            type: 'link',
-            linkType: 'custom',
-            url: '/admin',
-            children: [
-              {
-                text: 'configured in the admin dashboard',
-              },
-            ],
+            text: 'Корзина сохраняется в локальном хранилище, чтобы вы могли продолжить покупки позже. После аутентификации ваша корзина синхронизируется с вашим профилем пользователя, и вы сможете продолжить покупки с любого устройства.',
           },
         ],
       },
@@ -44,34 +34,11 @@ export const cartPage: Partial<Page> = {
   },
   layout: [
     {
-      blockType: 'content',
-      columns: [
-        {
-          size: 'twoThirds',
-          link: {
-            type: 'reference',
-            url: '',
-            reference: null,
-            label: '',
-          },
-          richText: [
-            {
-              children: [
-                {
-                  text: 'This is a custom layout building block configurable in the CMS—this can be anything you want. Related or suggested products, a blog post, video, etc.',
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
       richText: [
         {
           children: [
             {
-              text: 'Continue shopping',
+              text: 'Посмотрите все варианты',
             },
           ],
           type: 'h4',
@@ -79,20 +46,7 @@ export const cartPage: Partial<Page> = {
         {
           children: [
             {
-              text: 'This is a custom layout building block ',
-            },
-            {
-              type: 'link',
-              linkType: 'custom',
-              url: '/admin',
-              children: [
-                {
-                  text: 'configured in the admin dashboard',
-                },
-              ],
-            },
-            {
-              text: '.',
+              text: 'Изучите все доступные варианты, чтобы выбрать то, что подходит именнно вам.',
             },
           ],
         },
@@ -106,12 +60,12 @@ export const cartPage: Partial<Page> = {
               relationTo: 'pages',
               value: '{{PRODUCTS_PAGE_ID}}',
             },
-            label: 'Continue shopping',
+            label: 'Перейти в каталог',
             appearance: 'primary',
           },
         },
       ],
-      blockName: 'CTA',
+      blockName: '',
       blockType: 'cta',
     },
   ],

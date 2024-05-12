@@ -7,74 +7,62 @@ export const staticHome: Page = {
   createdAt: '',
   updatedAt: '',
   meta: {
-    title: 'Payload E-Commerce Template',
-    description: 'An open-source e-commerce store built with Payload and Next.js.',
+    title: 'Магазин Льгот',
+    description: 'Магазин гибких льгот для сотрудников.',
+    image: null,
   },
   hero: {
-    type: 'lowImpact',
+    type: 'customHero',
     richText: [
       {
         children: [
           {
-            text: 'Payload E-commerce Template',
+            text: 'Льготы',
           },
         ],
-        type: 'h1',
+        type: 'h2',
       },
       {
+        type: 'h2',
         children: [
           {
-            text: 'Welcome to your e-commerce store! ',
-          },
-          {
-            text: 'Your database is currently empty.',
-            bold: true,
-          },
-          {
-            text: ' To seed your database with a few products and pages, ',
-          },
-          {
-            type: 'link',
-            linkType: 'custom',
-            url: '/admin',
-            children: [
-              {
-                text: 'log in to the admin dashboard',
-              },
-            ],
-          },
-          {
-            text: ' and click "seed your database". If you have already seeded your database, ',
-          },
-          {
-            text: 'you may need to hard refresh this page to clear the cached request.',
-            bold: true,
+            text: 'под ваш',
           },
         ],
       },
       {
+        type: 'h2',
         children: [
           {
-            text: 'The code for this template is completely open-source and can be found ',
+            text: 'стиль жизни',
           },
+        ],
+      },
+      {
+        type: 'large-body',
+        children: [
           {
-            type: 'link',
-            linkType: 'custom',
-            url: 'https://github.com/payloadcms/payload/tree/main/templates/ecommerce',
-            newTab: true,
-            children: [
-              {
-                text: 'here',
-              },
-            ],
-          },
-          {
-            text: '.',
+            text: '\nАдаптируемся к каждому!',
           },
         ],
       },
     ],
-    media: '',
+    links: [
+      {
+        link: {
+          type: 'reference',
+          appearance: 'primary',
+          reference: {
+            relationTo: 'pages',
+            value: '{{PRODUCTS_PAGE_ID}}',
+          },
+          label: 'В каталог',
+          url: '',
+          icon: '{{HERO_IMAGE}}',
+        },
+      },
+    ],
+    media: '{{HERO_IMAGE}}',
   },
   layout: [
     {
@@ -82,7 +70,7 @@ export const staticHome: Page = {
         {
           children: [
             {
-              text: 'Seed your database',
+              text: 'Выполните настройку базы данных',
             },
           ],
           type: 'h4',
@@ -90,7 +78,7 @@ export const staticHome: Page = {
         {
           children: [
             {
-              text: 'Your database is currently empty. To seed your database, ',
+              text: 'На данный момент база данных пуста. Заполните её в ',
             },
             {
               type: 'link',
@@ -98,12 +86,12 @@ export const staticHome: Page = {
               url: '/admin',
               children: [
                 {
-                  text: 'log in to the admin dashboard',
+                  text: 'панели администратора',
                 },
               ],
             },
             {
-              text: ' and click "seed your database".',
+              text: ', нажав на "Нажмите сюда, чтобы произвести первичную настройку панели админитсратора".',
             },
           ],
         },
@@ -113,7 +101,7 @@ export const staticHome: Page = {
           link: {
             type: 'custom',
             url: '/admin',
-            label: 'Go to dashboard',
+            label: 'Панель управления',
             appearance: 'primary',
             reference: null,
           },

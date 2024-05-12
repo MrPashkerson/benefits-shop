@@ -15,7 +15,7 @@ export const staticCart: Page = {
   hero: {
     type: 'lowImpact',
     links: [],
-    media: '',
+    media: null,
     richText: [
       {
         type: 'h1',
@@ -29,14 +29,14 @@ export const staticCart: Page = {
         type: 'p',
         children: [
           {
-            text: 'This cart saves to local storage so you can continue shopping later. Once you authenticate with Payload, your cart will sync to your user profile so you can continue shopping from any device. ',
+            text: 'Корзина сохраняется в локальном хранилище, чтобы вы могли продолжить покупки позже. После аутентификации ваша корзина синхронизируется с вашим профилем пользователя, и вы сможете продолжить покупки с любого устройства.',
           },
           {
-            text: 'Your database does not have a cart page yet.',
+            text: 'В вашей базе данных ещё нет страницы корзины.',
             bold: true,
           },
           {
-            text: " You are currently seeing a demo page. To manage this page's content, ",
+            text: 'В данный момент вы видите демонстрационную страницу. Чтобы управлять содержимым этой страницы, ',
           },
           {
             type: 'link',
@@ -44,15 +44,15 @@ export const staticCart: Page = {
             url: '/admin',
             children: [
               {
-                text: 'log in to the admin dashboard',
+                text: 'зайдите в панель управления',
               },
             ],
           },
           {
-            text: ' and click "seed your database". If you have already seeded your database, ',
+            text: ' и нажмите на надпись "Нажмите сюда, чтобы произвести первичную настройку панели админитсратора".',
           },
           {
-            text: 'you may need to hard refresh this page to clear the cached request.',
+            text: 'После этого вам может потребоваться перезайти на страницу страницу, чтобы очистить кэшированный запрос.',
             bold: true,
           },
         ],
@@ -65,7 +65,7 @@ export const staticCart: Page = {
         {
           children: [
             {
-              text: 'Create a cart page',
+              text: 'Создайте страницу корзины',
             },
           ],
           type: 'h4',
@@ -73,7 +73,7 @@ export const staticCart: Page = {
         {
           children: [
             {
-              text: 'Your database is does not have a cart page yet. To seed your database with a cart page, ',
+              text: 'В вашей базе данных еще нет страницы корзины. Чтобы её добавить, ',
             },
             {
               type: 'link',
@@ -81,12 +81,12 @@ export const staticCart: Page = {
               url: '/admin',
               children: [
                 {
-                  text: 'log in to the admin dashboard',
+                  text: 'перейдите в панель управления',
                 },
               ],
             },
             {
-              text: ' and click "seed your database".',
+              text: ' и нажмите на надпись "Нажмите сюда, чтобы произвести первичную настройку панели админитсратора".',
             },
           ],
         },
@@ -102,7 +102,7 @@ export const staticCart: Page = {
           },
         },
       ],
-      blockName: 'CTA',
+      blockName: '',
       blockType: 'cta',
     },
   ],
