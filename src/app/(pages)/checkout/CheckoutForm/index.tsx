@@ -65,7 +65,6 @@ export const CheckoutForm: React.FC<{}> = () => {
               throw new Error(orderReq.statusText || 'Что-то пошло не так при создании заказа.')
 
             const orderRes = await orderReq.json()
-
             router.push(`/order-confirmation?order_id=${orderRes.doc.id}`)
           } catch (err) {
             // don't throw an error if the order was not created successfully

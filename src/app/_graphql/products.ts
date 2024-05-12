@@ -26,6 +26,7 @@ export const PRODUCT = `
           ${ARCHIVE_BLOCK}
         }
         price
+        slug
         relatedProducts {
           id
           slug

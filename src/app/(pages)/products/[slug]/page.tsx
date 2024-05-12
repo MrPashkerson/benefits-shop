@@ -40,7 +40,6 @@ export default async function Product({ params: { slug } }) {
   }
 
   const { relatedProducts } = product
-  console.log(relatedProducts)
 
   return (
     <>

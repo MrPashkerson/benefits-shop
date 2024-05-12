@@ -70,8 +70,9 @@ export const CartPage: React.FC<{
                       const {
                         quantity,
                         product,
-                        product: { title, meta },
+                        product: { title, meta, slug },
                       } = item
+                      console.log(item)
 
                       const isLast = index === (cart?.items?.length || 0) - 1
 
@@ -84,6 +85,7 @@ export const CartPage: React.FC<{
                           metaImage={metaImage}
                           qty={quantity}
                           addItemToCart={addItemToCart}
+                          slug={slug}
                         />
                       )
                     }
