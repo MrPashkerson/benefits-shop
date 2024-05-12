@@ -1,9 +1,8 @@
 import { webpackBundler } from '@payloadcms/bundler-webpack' // bundler-import
 import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
 import { payloadCloud } from '@payloadcms/plugin-cloud'
-import nestedDocs from '@payloadcms/plugin-nested-docs'
 import redirects from '@payloadcms/plugin-redirects'
-import seo from '@payloadcms/plugin-seo'
+import seoPlugin from '@payloadcms/plugin-seo'
 import type { GenerateTitle } from '@payloadcms/plugin-seo/types'
 import { slateEditor } from '@payloadcms/richtext-slate' // editor-import
 import dotenv from 'dotenv'
@@ -19,12 +18,12 @@ import Users from './collections/Users'
 import beforeDashboard from './components/BeforeDashboard'
 import CustomIcon from './components/CustomIcon'
 import CustomLogo from './components/CustomLogo'
-import { createPaymentIntent } from './endpoints/create-payment-intent'
-import { checkPages } from './endpoints/ensure-collection-pages-not-empty'
+import { checkPages } from './endpoints/check-pages-collection'
 import { seed } from './endpoints/seed'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
+import {checkCredits} from "./endpoints/check-credits";
 
 const generateTitle: GenerateTitle = () => {
   return 'Магазин Льгот'
@@ -38,10 +37,6 @@ dotenv.config({
 
 export default buildConfig({
   admin: {
-    autoLogin: {
-      email: 'pavelromanov1226@gmail.com',
-      password: 'toor',
-    },
     user: Users.slug,
     bundler: webpackBundler(), // bundler-config
     components: {
@@ -66,8 +61,8 @@ export default buildConfig({
           alias: {
             ...config.resolve?.alias,
             dotenv: path.resolve(__dirname, './dotenv.js'),
-            [path.resolve(__dirname, 'endpoints/ensure-collection-pages-not-empty.ts')]:
-              mockModulePath,
+            [path.resolve(__dirname, 'endpoints/check-pages-collection.ts')]: mockModulePath,
+            [path.resolve(__dirname, 'endpoints/check-credits')]: mockModulePath,
             [path.resolve(__dirname, 'endpoints/seed')]: mockModulePath,
             express: mockModulePath,
           },
@@ -99,6 +94,11 @@ export default buildConfig({
       handler: checkPages,
     },
     {
+      path: '/check-credits',
+      method: 'post',
+      handler: checkCredits,
+    },
+    {
       path: '/seed',
       method: 'get',
       handler: seed,
@@ -108,13 +108,21 @@ export default buildConfig({
     redirects({
       collections: ['pages', 'products'],
     }),
-    nestedDocs({
-      collections: ['categories'],
-    }),
-    seo({
+    seoPlugin({
       collections: ['pages', 'products'],
       generateTitle,
       uploadsCollection: 'media',
+      fieldOverrides: {
+        title: {
+          label: 'Название',
+        },
+        description: {
+          label: 'Описание',
+        },
+        image: {
+          label: 'Meta-изображение',
+        },
+      },
     }),
     payloadCloud(),
   ],

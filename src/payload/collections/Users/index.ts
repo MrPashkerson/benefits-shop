@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload/types'
 
 import { admins } from '../../access/admins'
+import ResetPasswordEmail from '../../components/ResetPasswordEmail'
 import adminsAndUser from './access/adminsAndUser'
 import { checkRole } from './checkRole'
 import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
@@ -31,11 +32,21 @@ const Users: CollectionConfig = {
   hooks: {
     afterChange: [loginAfterCreate],
   },
-  auth: true,
+  auth: {
+    forgotPassword: {
+      generateEmailHTML: ({ req, token, user }) => {
+        return ResetPasswordEmail({ req, token, user })
+      },
+      generateEmailSubject: () => {
+        return `Сброс пароля в сервисе Магазин Льгот!`
+      },
+    },
+  },
   fields: [
     {
       name: 'name',
       label: 'ФИО',
+      required: true,
       type: 'text',
     },
     {

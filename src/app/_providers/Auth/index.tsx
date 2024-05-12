@@ -59,10 +59,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(data?.loginUser?.user)
         setStatus('loggedIn')
       } else {
-        throw new Error('Invalid login')
+        throw new Error('Ошибка входа')
       }
     } catch (e) {
-      throw new Error('An error occurred while attempting to login.')
+      throw new Error('При попытке войти в систему произошла ошибка.')
     }
   }, [])
 
@@ -88,9 +88,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return user
       }
 
-      throw new Error('Invalid login')
+      throw new Error('Ошибка входа')
     } catch (e) {
-      throw new Error('An error occurred while attempting to login.')
+      throw new Error('При попытке войти в систему произошла ошибка.')
     }
   }, [])
 
@@ -108,10 +108,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(null)
         setStatus('loggedOut')
       } else {
-        throw new Error('An error occurred while attempting to logout.')
+        throw new Error('При попытке выйти из системы произошла ошибка.')
       }
     } catch (e) {
-      throw new Error('An error occurred while attempting to logout.')
+      throw new Error('При попытке выйти из системы произошла ошибка.')
     }
   }, [])
 
@@ -131,11 +131,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(meUser || null)
           setStatus(meUser ? 'loggedIn' : undefined)
         } else {
-          throw new Error('An error occurred while fetching your account.')
+          throw new Error('При получении данных о вашей учетной записи произошла ошибка.')
         }
       } catch (e) {
         setUser(null)
-        throw new Error('An error occurred while fetching your account.')
+        throw new Error('При получении данных о вашей учетной записи произошла ошибка.')
       }
     }
 
@@ -160,10 +160,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (errors) throw new Error(errors[0].message)
         setUser(data?.loginUser?.user)
       } else {
-        throw new Error('Invalid login')
+        throw new Error('Ошибка входа')
       }
     } catch (e) {
-      throw new Error('An error occurred while attempting to login.')
+      throw new Error('При попытке войти в систему произошла ошибка.')
     }
   }, [])
 

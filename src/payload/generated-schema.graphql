@@ -1,35 +1,43 @@
 type Query {
   Page(id: String!, draft: Boolean): Page
   Pages(draft: Boolean, where: Page_where, limit: Int, page: Int, sort: String): Pages
+  countPages(draft: Boolean, where: Page_where): countPages
   docAccessPage(id: String!): pagesDocAccess
   versionPage(id: String): PageVersion
   versionsPages(where: versionsPage_where, limit: Int, page: Int, sort: String): versionsPages
   Product(id: String!, draft: Boolean): Product
   Products(draft: Boolean, where: Product_where, limit: Int, page: Int, sort: String): Products
+  countProducts(draft: Boolean, where: Product_where): countProducts
   docAccessProduct(id: String!): productsDocAccess
   versionProduct(id: String): ProductVersion
   versionsProducts(where: versionsProduct_where, limit: Int, page: Int, sort: String): versionsProducts
-  Order(id: String!, draft: Boolean): Order
-  Orders(draft: Boolean, where: Order_where, limit: Int, page: Int, sort: String): Orders
+  Order(id: String!): Order
+  Orders(where: Order_where, limit: Int, page: Int, sort: String): Orders
+  countOrders(where: Order_where): countOrders
   docAccessOrder(id: String!): ordersDocAccess
-  Media(id: String!, draft: Boolean): Media
-  allMedia(draft: Boolean, where: Media_where, limit: Int, page: Int, sort: String): allMedia
+  Media(id: String!): Media
+  allMedia(where: Media_where, limit: Int, page: Int, sort: String): allMedia
+  countallMedia(where: Media_where): countallMedia
   docAccessMedia(id: String!): mediaDocAccess
-  Category(id: String!, draft: Boolean): Category
-  Categories(draft: Boolean, where: Category_where, limit: Int, page: Int, sort: String): Categories
+  Category(id: String!): Category
+  Categories(where: Category_where, limit: Int, page: Int, sort: String): Categories
+  countCategories(where: Category_where): countCategories
   docAccessCategory(id: String!): categoriesDocAccess
   User(id: String!, draft: Boolean): User
   Users(draft: Boolean, where: User_where, limit: Int, page: Int, sort: String): Users
+  countUsers(draft: Boolean, where: User_where): countUsers
   docAccessUser(id: String!): usersDocAccess
   versionUser(id: String): UserVersion
   versionsUsers(where: versionsUser_where, limit: Int, page: Int, sort: String): versionsUsers
   meUser: usersMe
   initializedUser: Boolean
-  Redirect(id: String!, draft: Boolean): Redirect
-  Redirects(draft: Boolean, where: Redirect_where, limit: Int, page: Int, sort: String): Redirects
+  Redirect(id: String!): Redirect
+  Redirects(where: Redirect_where, limit: Int, page: Int, sort: String): Redirects
+  countRedirects(where: Redirect_where): countRedirects
   docAccessRedirect(id: String!): redirectsDocAccess
-  PayloadPreference(id: String!, draft: Boolean): PayloadPreference
-  PayloadPreferences(draft: Boolean, where: PayloadPreference_where, limit: Int, page: Int, sort: String): PayloadPreferences
+  PayloadPreference(id: String!): PayloadPreference
+  PayloadPreferences(where: PayloadPreference_where, limit: Int, page: Int, sort: String): PayloadPreferences
+  countPayloadPreferences(where: PayloadPreference_where): countPayloadPreferences
   docAccessPayloadPreference(id: String!): payload_preferencesDocAccess
   Settings(draft: Boolean): Settings
   docAccessSettings: settingsDocAccess
@@ -86,7 +94,7 @@ type Page_Hero_Links {
 type Page_Hero_Links_Link {
   type: Page_Hero_Links_Link_type
   newTab: Boolean
-  reference: Page_Hero_Links_Link_Reference_Relationship
+  reference(draft: Boolean): Page_Hero_Links_Link_Reference_Relationship
   url: String
   label: String
   icon(where: Page_Hero_Links_Link_Icon_where): Media
@@ -472,7 +480,7 @@ type Cta_Links {
 type Cta_Links_Link {
   type: Cta_Links_Link_type
   newTab: Boolean
-  reference: Cta_Links_Link_Reference_Relationship
+  reference(draft: Boolean): Cta_Links_Link_Reference_Relationship
   url: String
   label: String
   icon(where: Cta_Links_Link_Icon_where): Media
@@ -688,7 +696,7 @@ enum Content_Columns_size {
 type Content_Columns_Link {
   type: Content_Columns_Link_type
   newTab: Boolean
-  reference: Content_Columns_Link_Reference_Relationship
+  reference(draft: Boolean): Content_Columns_Link_Reference_Relationship
   url: String
   label: String
   icon(where: Content_Columns_Link_Icon_where): Media
@@ -1061,8 +1069,8 @@ type Archive {
   relationTo: Archive_relationTo
   categories: [Category!]
   limit: Float
-  selectedDocs: [Archive_SelectedDocs_Relationship!]
-  populatedDocs: [Archive_PopulatedDocs_Relationship!]
+  selectedDocs(draft: Boolean): [Archive_SelectedDocs_Relationship!]
+  populatedDocs(draft: Boolean): [Archive_PopulatedDocs_Relationship!]
   populatedDocsTotal: Float
   id: String
   blockName: String
@@ -1082,8 +1090,6 @@ type Category {
   id: String
   title: String!
   media(where: Category_Media_where): Media
-  parent: Category
-  breadcrumbs: [Category_Breadcrumbs!]
   updatedAt: DateTime
   createdAt: DateTime
 }
@@ -1250,13 +1256,6 @@ input Category_Media_where_or {
   OR: [Category_Media_where_or]
 }
 
-type Category_Breadcrumbs {
-  doc: Category
-  url: String
-  label: String
-  id: String
-}
-
 type Archive_SelectedDocs_Relationship {
   relationTo: Archive_SelectedDocs_RelationTo
   value: Archive_SelectedDocs
@@ -1275,7 +1274,7 @@ type Product {
   layout: [Product_Layout!]
   price: Float
   categories: Category
-  relatedProducts: [Product!]
+  relatedProducts(draft: Boolean): [Product!]
   slug: String
   skipSync: Boolean
   meta: Product_Meta
@@ -1947,6 +1946,10 @@ input Page_where_or {
   OR: [Page_where_or]
 }
 
+type countPages {
+  totalDocs: Int
+}
+
 type pagesDocAccess {
   fields: PagesDocAccessFields
   create: PagesCreateDocAccess
@@ -2432,34 +2435,9 @@ type PagesDocAccessFields_meta_Delete {
 }
 
 type PagesDocAccessFields_meta_Fields {
-  overview: PagesDocAccessFields_meta_overview
   title: PagesDocAccessFields_meta_title
   description: PagesDocAccessFields_meta_description
   image: PagesDocAccessFields_meta_image
-  preview: PagesDocAccessFields_meta_preview
-}
-
-type PagesDocAccessFields_meta_overview {
-  create: PagesDocAccessFields_meta_overview_Create
-  read: PagesDocAccessFields_meta_overview_Read
-  update: PagesDocAccessFields_meta_overview_Update
-  delete: PagesDocAccessFields_meta_overview_Delete
-}
-
-type PagesDocAccessFields_meta_overview_Create {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_overview_Read {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_overview_Update {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_overview_Delete {
-  permission: Boolean!
 }
 
 type PagesDocAccessFields_meta_title {
@@ -2528,29 +2506,6 @@ type PagesDocAccessFields_meta_image_Update {
 }
 
 type PagesDocAccessFields_meta_image_Delete {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_preview {
-  create: PagesDocAccessFields_meta_preview_Create
-  read: PagesDocAccessFields_meta_preview_Read
-  update: PagesDocAccessFields_meta_preview_Update
-  delete: PagesDocAccessFields_meta_preview_Delete
-}
-
-type PagesDocAccessFields_meta_preview_Create {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_preview_Read {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_preview_Update {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_meta_preview_Delete {
   permission: Boolean!
 }
 
@@ -2654,7 +2609,7 @@ type PagesReadVersionsDocAccess {
 }
 
 type PageVersion {
-  parent: Page
+  parent(draft: Boolean): Page
   version: PageVersion_Version
   createdAt: DateTime
   updatedAt: DateTime
@@ -2697,7 +2652,7 @@ type PageVersion_Version_Hero_Links {
 type PageVersion_Version_Hero_Links_Link {
   type: PageVersion_Version_Hero_Links_Link_type
   newTab: Boolean
-  reference: PageVersion_Version_Hero_Links_Link_Reference_Relationship
+  reference(draft: Boolean): PageVersion_Version_Hero_Links_Link_Reference_Relationship
   url: String
   label: String
   icon(where: PageVersion_Version_Hero_Links_Link_Icon_where): Media
@@ -3786,6 +3741,10 @@ input Product_where_or {
   OR: [Product_where_or]
 }
 
+type countProducts {
+  totalDocs: Int
+}
+
 type productsDocAccess {
   fields: ProductsDocAccessFields
   create: ProductsCreateDocAccess
@@ -4019,34 +3978,9 @@ type ProductsDocAccessFields_meta_Delete {
 }
 
 type ProductsDocAccessFields_meta_Fields {
-  overview: ProductsDocAccessFields_meta_overview
   title: ProductsDocAccessFields_meta_title
   description: ProductsDocAccessFields_meta_description
   image: ProductsDocAccessFields_meta_image
-  preview: ProductsDocAccessFields_meta_preview
-}
-
-type ProductsDocAccessFields_meta_overview {
-  create: ProductsDocAccessFields_meta_overview_Create
-  read: ProductsDocAccessFields_meta_overview_Read
-  update: ProductsDocAccessFields_meta_overview_Update
-  delete: ProductsDocAccessFields_meta_overview_Delete
-}
-
-type ProductsDocAccessFields_meta_overview_Create {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_overview_Read {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_overview_Update {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_overview_Delete {
-  permission: Boolean!
 }
 
 type ProductsDocAccessFields_meta_title {
@@ -4115,29 +4049,6 @@ type ProductsDocAccessFields_meta_image_Update {
 }
 
 type ProductsDocAccessFields_meta_image_Delete {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_preview {
-  create: ProductsDocAccessFields_meta_preview_Create
-  read: ProductsDocAccessFields_meta_preview_Read
-  update: ProductsDocAccessFields_meta_preview_Update
-  delete: ProductsDocAccessFields_meta_preview_Delete
-}
-
-type ProductsDocAccessFields_meta_preview_Create {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_preview_Read {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_preview_Update {
-  permission: Boolean!
-}
-
-type ProductsDocAccessFields_meta_preview_Delete {
   permission: Boolean!
 }
 
@@ -4236,7 +4147,7 @@ type ProductsReadVersionsDocAccess {
 }
 
 type ProductVersion {
-  parent: Product
+  parent(draft: Boolean): Product
   version: ProductVersion_Version
   createdAt: DateTime
   updatedAt: DateTime
@@ -4250,7 +4161,7 @@ type ProductVersion_Version {
   layout: [ProductVersion_Version_Layout!]
   price: Float
   categories: Category
-  relatedProducts: [Product!]
+  relatedProducts(draft: Boolean): [Product!]
   slug: String
   skipSync: Boolean
   meta: ProductVersion_Version_Meta
@@ -4693,7 +4604,7 @@ input versionsProduct_where_or {
 
 type Order {
   id: String
-  orderedBy: User
+  orderedBy(draft: Boolean): User
   total: Float!
   items: [Order_Items!]
   updatedAt: DateTime
@@ -4705,7 +4616,7 @@ type User {
   name: String
   credits: Float
   roles: [User_roles!]
-  purchases: [Product!]
+  purchases(draft: Boolean): [Product!]
   cart: User_Cart
   skipSync: Boolean
   updatedAt: DateTime
@@ -4731,7 +4642,7 @@ type User_Cart {
 }
 
 type CartItems {
-  product: Product
+  product(draft: Boolean): Product
   quantity: Float
   id: String
 }
@@ -4747,7 +4658,7 @@ A field whose value conforms to the standard internet email address format as sp
 scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
 
 type Order_Items {
-  product: Product
+  product(draft: Boolean): Product
   price: Float
   quantity: Float
   id: String
@@ -4897,6 +4808,10 @@ input Order_where_or {
   id: Order_id_operator
   AND: [Order_where_and]
   OR: [Order_where_or]
+}
+
+type countOrders {
+  totalDocs: Int
 }
 
 type ordersDocAccess {
@@ -5326,6 +5241,10 @@ input Media_where_or {
   OR: [Media_where_or]
 }
 
+type countallMedia {
+  totalDocs: Int
+}
+
 type mediaDocAccess {
   fields: MediaDocAccessFields
   create: MediaCreateDocAccess
@@ -5614,11 +5533,6 @@ type Categories {
 input Category_where {
   title: Category_title_operator
   media: Category_media_operator
-  parent: Category_parent_operator
-  breadcrumbs__doc: Category_breadcrumbs__doc_operator
-  breadcrumbs__url: Category_breadcrumbs__url_operator
-  breadcrumbs__label: Category_breadcrumbs__label_operator
-  breadcrumbs__id: Category_breadcrumbs__id_operator
   updatedAt: Category_updatedAt_operator
   createdAt: Category_createdAt_operator
   id: Category_id_operator
@@ -5639,57 +5553,6 @@ input Category_title_operator {
 input Category_media_operator {
   equals: String
   not_equals: String
-  exists: Boolean
-}
-
-input Category_parent_operator {
-  equals: JSON
-  not_equals: JSON
-  in: [JSON]
-  not_in: [JSON]
-  all: [JSON]
-  exists: Boolean
-}
-
-input Category_breadcrumbs__doc_operator {
-  equals: JSON
-  not_equals: JSON
-  in: [JSON]
-  not_in: [JSON]
-  all: [JSON]
-  exists: Boolean
-}
-
-input Category_breadcrumbs__url_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input Category_breadcrumbs__label_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input Category_breadcrumbs__id_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
   exists: Boolean
 }
 
@@ -5729,11 +5592,6 @@ input Category_id_operator {
 input Category_where_and {
   title: Category_title_operator
   media: Category_media_operator
-  parent: Category_parent_operator
-  breadcrumbs__doc: Category_breadcrumbs__doc_operator
-  breadcrumbs__url: Category_breadcrumbs__url_operator
-  breadcrumbs__label: Category_breadcrumbs__label_operator
-  breadcrumbs__id: Category_breadcrumbs__id_operator
   updatedAt: Category_updatedAt_operator
   createdAt: Category_createdAt_operator
   id: Category_id_operator
@@ -5744,16 +5602,15 @@ input Category_where_and {
 input Category_where_or {
   title: Category_title_operator
   media: Category_media_operator
-  parent: Category_parent_operator
-  breadcrumbs__doc: Category_breadcrumbs__doc_operator
-  breadcrumbs__url: Category_breadcrumbs__url_operator
-  breadcrumbs__label: Category_breadcrumbs__label_operator
-  breadcrumbs__id: Category_breadcrumbs__id_operator
   updatedAt: Category_updatedAt_operator
   createdAt: Category_createdAt_operator
   id: Category_id_operator
   AND: [Category_where_and]
   OR: [Category_where_or]
+}
+
+type countCategories {
+  totalDocs: Int
 }
 
 type categoriesDocAccess {
@@ -5767,8 +5624,6 @@ type categoriesDocAccess {
 type CategoriesDocAccessFields {
   title: CategoriesDocAccessFields_title
   media: CategoriesDocAccessFields_media
-  parent: CategoriesDocAccessFields_parent
-  breadcrumbs: CategoriesDocAccessFields_breadcrumbs
   updatedAt: CategoriesDocAccessFields_updatedAt
   createdAt: CategoriesDocAccessFields_createdAt
 }
@@ -5816,152 +5671,6 @@ type CategoriesDocAccessFields_media_Update {
 }
 
 type CategoriesDocAccessFields_media_Delete {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_parent {
-  create: CategoriesDocAccessFields_parent_Create
-  read: CategoriesDocAccessFields_parent_Read
-  update: CategoriesDocAccessFields_parent_Update
-  delete: CategoriesDocAccessFields_parent_Delete
-}
-
-type CategoriesDocAccessFields_parent_Create {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_parent_Read {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_parent_Update {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_parent_Delete {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs {
-  create: CategoriesDocAccessFields_breadcrumbs_Create
-  read: CategoriesDocAccessFields_breadcrumbs_Read
-  update: CategoriesDocAccessFields_breadcrumbs_Update
-  delete: CategoriesDocAccessFields_breadcrumbs_Delete
-  fields: CategoriesDocAccessFields_breadcrumbs_Fields
-}
-
-type CategoriesDocAccessFields_breadcrumbs_Create {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_Read {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_Update {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_Delete {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_Fields {
-  doc: CategoriesDocAccessFields_breadcrumbs_doc
-  url: CategoriesDocAccessFields_breadcrumbs_url
-  label: CategoriesDocAccessFields_breadcrumbs_label
-  id: CategoriesDocAccessFields_breadcrumbs_id
-}
-
-type CategoriesDocAccessFields_breadcrumbs_doc {
-  create: CategoriesDocAccessFields_breadcrumbs_doc_Create
-  read: CategoriesDocAccessFields_breadcrumbs_doc_Read
-  update: CategoriesDocAccessFields_breadcrumbs_doc_Update
-  delete: CategoriesDocAccessFields_breadcrumbs_doc_Delete
-}
-
-type CategoriesDocAccessFields_breadcrumbs_doc_Create {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_doc_Read {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_doc_Update {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_doc_Delete {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_url {
-  create: CategoriesDocAccessFields_breadcrumbs_url_Create
-  read: CategoriesDocAccessFields_breadcrumbs_url_Read
-  update: CategoriesDocAccessFields_breadcrumbs_url_Update
-  delete: CategoriesDocAccessFields_breadcrumbs_url_Delete
-}
-
-type CategoriesDocAccessFields_breadcrumbs_url_Create {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_url_Read {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_url_Update {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_url_Delete {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_label {
-  create: CategoriesDocAccessFields_breadcrumbs_label_Create
-  read: CategoriesDocAccessFields_breadcrumbs_label_Read
-  update: CategoriesDocAccessFields_breadcrumbs_label_Update
-  delete: CategoriesDocAccessFields_breadcrumbs_label_Delete
-}
-
-type CategoriesDocAccessFields_breadcrumbs_label_Create {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_label_Read {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_label_Update {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_label_Delete {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_id {
-  create: CategoriesDocAccessFields_breadcrumbs_id_Create
-  read: CategoriesDocAccessFields_breadcrumbs_id_Read
-  update: CategoriesDocAccessFields_breadcrumbs_id_Update
-  delete: CategoriesDocAccessFields_breadcrumbs_id_Delete
-}
-
-type CategoriesDocAccessFields_breadcrumbs_id_Create {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_id_Read {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_id_Update {
-  permission: Boolean!
-}
-
-type CategoriesDocAccessFields_breadcrumbs_id_Delete {
   permission: Boolean!
 }
 
@@ -6071,7 +5780,6 @@ input User_name_operator {
   in: [String]
   not_in: [String]
   all: [String]
-  exists: Boolean
 }
 
 input User_credits_operator {
@@ -6233,6 +5941,10 @@ input User_where_or {
   id: User_id_operator
   AND: [User_where_and]
   OR: [User_where_or]
+}
+
+type countUsers {
+  totalDocs: Int
 }
 
 type usersDocAccess {
@@ -6647,7 +6359,7 @@ type UsersReadVersionsDocAccess {
 }
 
 type UserVersion {
-  parent: User
+  parent(draft: Boolean): User
   version: UserVersion_Version
   createdAt: DateTime
   updatedAt: DateTime
@@ -6659,7 +6371,7 @@ type UserVersion_Version {
   name: String
   credits: Float
   roles: [UserVersion_Version_roles!]
-  purchases: [Product!]
+  purchases(draft: Boolean): [Product!]
   cart: UserVersion_Version_Cart
   skipSync: Boolean
   updatedAt: DateTime
@@ -6749,7 +6461,6 @@ input versionsUser_version__name_operator {
   in: [String]
   not_in: [String]
   all: [String]
-  exists: Boolean
 }
 
 input versionsUser_version__credits_operator {
@@ -7055,7 +6766,7 @@ type Redirect {
 
 type Redirect_To {
   type: Redirect_To_type
-  reference: Redirect_To_Reference_Relationship
+  reference(draft: Boolean): Redirect_To_Reference_Relationship
   url: String
 }
 
@@ -7200,6 +6911,10 @@ input Redirect_where_or {
   id: Redirect_id_operator
   AND: [Redirect_where_and]
   OR: [Redirect_where_or]
+}
+
+type countRedirects {
+  totalDocs: Int
 }
 
 type redirectsDocAccess {
@@ -7407,7 +7122,7 @@ type RedirectsDeleteDocAccess {
 
 type PayloadPreference {
   id: String
-  user: PayloadPreference_User_Relationship!
+  user(draft: Boolean): PayloadPreference_User_Relationship!
   key: String
   value: JSON
   updatedAt: DateTime
@@ -7533,6 +7248,10 @@ input PayloadPreference_where_or {
   id: PayloadPreference_id_operator
   AND: [PayloadPreference_where_and]
   OR: [PayloadPreference_where_or]
+}
+
+type countPayloadPreferences {
+  totalDocs: Int
 }
 
 type payload_preferencesDocAccess {
@@ -7687,7 +7406,7 @@ type PayloadPreferencesDeleteDocAccess {
 }
 
 type Settings {
-  productsPage: Page
+  productsPage(draft: Boolean): Page
   updatedAt: DateTime
   createdAt: DateTime
 }
@@ -7797,7 +7516,7 @@ type Header_NavItems {
 type Header_NavItems_Link {
   type: Header_NavItems_Link_type
   newTab: Boolean
-  reference: Header_NavItems_Link_Reference_Relationship
+  reference(draft: Boolean): Header_NavItems_Link_Reference_Relationship
   url: String
   label: String
   icon(where: Header_NavItems_Link_Icon_where): Media
@@ -8287,7 +8006,7 @@ type Footer_NavItems {
 type Footer_NavItems_Link {
   type: Footer_NavItems_Link_type
   newTab: Boolean
-  reference: Footer_NavItems_Link_Reference_Relationship
+  reference(draft: Boolean): Footer_NavItems_Link_Reference_Relationship
   url: String
   label: String
   icon(where: Footer_NavItems_Link_Icon_where): Media
@@ -9286,34 +9005,9 @@ type PagesFields_meta_Delete {
 }
 
 type PagesFields_meta_Fields {
-  overview: PagesFields_meta_overview
   title: PagesFields_meta_title
   description: PagesFields_meta_description
   image: PagesFields_meta_image
-  preview: PagesFields_meta_preview
-}
-
-type PagesFields_meta_overview {
-  create: PagesFields_meta_overview_Create
-  read: PagesFields_meta_overview_Read
-  update: PagesFields_meta_overview_Update
-  delete: PagesFields_meta_overview_Delete
-}
-
-type PagesFields_meta_overview_Create {
-  permission: Boolean!
-}
-
-type PagesFields_meta_overview_Read {
-  permission: Boolean!
-}
-
-type PagesFields_meta_overview_Update {
-  permission: Boolean!
-}
-
-type PagesFields_meta_overview_Delete {
-  permission: Boolean!
 }
 
 type PagesFields_meta_title {
@@ -9382,29 +9076,6 @@ type PagesFields_meta_image_Update {
 }
 
 type PagesFields_meta_image_Delete {
-  permission: Boolean!
-}
-
-type PagesFields_meta_preview {
-  create: PagesFields_meta_preview_Create
-  read: PagesFields_meta_preview_Read
-  update: PagesFields_meta_preview_Update
-  delete: PagesFields_meta_preview_Delete
-}
-
-type PagesFields_meta_preview_Create {
-  permission: Boolean!
-}
-
-type PagesFields_meta_preview_Read {
-  permission: Boolean!
-}
-
-type PagesFields_meta_preview_Update {
-  permission: Boolean!
-}
-
-type PagesFields_meta_preview_Delete {
   permission: Boolean!
 }
 
@@ -9735,34 +9406,9 @@ type ProductsFields_meta_Delete {
 }
 
 type ProductsFields_meta_Fields {
-  overview: ProductsFields_meta_overview
   title: ProductsFields_meta_title
   description: ProductsFields_meta_description
   image: ProductsFields_meta_image
-  preview: ProductsFields_meta_preview
-}
-
-type ProductsFields_meta_overview {
-  create: ProductsFields_meta_overview_Create
-  read: ProductsFields_meta_overview_Read
-  update: ProductsFields_meta_overview_Update
-  delete: ProductsFields_meta_overview_Delete
-}
-
-type ProductsFields_meta_overview_Create {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_overview_Read {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_overview_Update {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_overview_Delete {
-  permission: Boolean!
 }
 
 type ProductsFields_meta_title {
@@ -9831,29 +9477,6 @@ type ProductsFields_meta_image_Update {
 }
 
 type ProductsFields_meta_image_Delete {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_preview {
-  create: ProductsFields_meta_preview_Create
-  read: ProductsFields_meta_preview_Read
-  update: ProductsFields_meta_preview_Update
-  delete: ProductsFields_meta_preview_Delete
-}
-
-type ProductsFields_meta_preview_Create {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_preview_Read {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_preview_Update {
-  permission: Boolean!
-}
-
-type ProductsFields_meta_preview_Delete {
   permission: Boolean!
 }
 
@@ -10484,8 +10107,6 @@ type categoriesAccess {
 type CategoriesFields {
   title: CategoriesFields_title
   media: CategoriesFields_media
-  parent: CategoriesFields_parent
-  breadcrumbs: CategoriesFields_breadcrumbs
   updatedAt: CategoriesFields_updatedAt
   createdAt: CategoriesFields_createdAt
 }
@@ -10533,152 +10154,6 @@ type CategoriesFields_media_Update {
 }
 
 type CategoriesFields_media_Delete {
-  permission: Boolean!
-}
-
-type CategoriesFields_parent {
-  create: CategoriesFields_parent_Create
-  read: CategoriesFields_parent_Read
-  update: CategoriesFields_parent_Update
-  delete: CategoriesFields_parent_Delete
-}
-
-type CategoriesFields_parent_Create {
-  permission: Boolean!
-}
-
-type CategoriesFields_parent_Read {
-  permission: Boolean!
-}
-
-type CategoriesFields_parent_Update {
-  permission: Boolean!
-}
-
-type CategoriesFields_parent_Delete {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs {
-  create: CategoriesFields_breadcrumbs_Create
-  read: CategoriesFields_breadcrumbs_Read
-  update: CategoriesFields_breadcrumbs_Update
-  delete: CategoriesFields_breadcrumbs_Delete
-  fields: CategoriesFields_breadcrumbs_Fields
-}
-
-type CategoriesFields_breadcrumbs_Create {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_Read {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_Update {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_Delete {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_Fields {
-  doc: CategoriesFields_breadcrumbs_doc
-  url: CategoriesFields_breadcrumbs_url
-  label: CategoriesFields_breadcrumbs_label
-  id: CategoriesFields_breadcrumbs_id
-}
-
-type CategoriesFields_breadcrumbs_doc {
-  create: CategoriesFields_breadcrumbs_doc_Create
-  read: CategoriesFields_breadcrumbs_doc_Read
-  update: CategoriesFields_breadcrumbs_doc_Update
-  delete: CategoriesFields_breadcrumbs_doc_Delete
-}
-
-type CategoriesFields_breadcrumbs_doc_Create {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_doc_Read {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_doc_Update {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_doc_Delete {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_url {
-  create: CategoriesFields_breadcrumbs_url_Create
-  read: CategoriesFields_breadcrumbs_url_Read
-  update: CategoriesFields_breadcrumbs_url_Update
-  delete: CategoriesFields_breadcrumbs_url_Delete
-}
-
-type CategoriesFields_breadcrumbs_url_Create {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_url_Read {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_url_Update {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_url_Delete {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_label {
-  create: CategoriesFields_breadcrumbs_label_Create
-  read: CategoriesFields_breadcrumbs_label_Read
-  update: CategoriesFields_breadcrumbs_label_Update
-  delete: CategoriesFields_breadcrumbs_label_Delete
-}
-
-type CategoriesFields_breadcrumbs_label_Create {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_label_Read {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_label_Update {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_label_Delete {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_id {
-  create: CategoriesFields_breadcrumbs_id_Create
-  read: CategoriesFields_breadcrumbs_id_Read
-  update: CategoriesFields_breadcrumbs_id_Update
-  delete: CategoriesFields_breadcrumbs_id_Delete
-}
-
-type CategoriesFields_breadcrumbs_id_Create {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_id_Read {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_id_Update {
-  permission: Boolean!
-}
-
-type CategoriesFields_breadcrumbs_id_Delete {
   permission: Boolean!
 }
 
@@ -12219,14 +11694,14 @@ type Mutation {
   updateProduct(id: String!, autosave: Boolean, data: mutationProductUpdateInput!, draft: Boolean): Product
   deleteProduct(id: String!): Product
   restoreVersionProduct(id: String): Product
-  createOrder(data: mutationOrderInput!, draft: Boolean): Order
-  updateOrder(id: String!, autosave: Boolean, data: mutationOrderUpdateInput!, draft: Boolean): Order
+  createOrder(data: mutationOrderInput!): Order
+  updateOrder(id: String!, autosave: Boolean, data: mutationOrderUpdateInput!): Order
   deleteOrder(id: String!): Order
-  createMedia(data: mutationMediaInput!, draft: Boolean): Media
-  updateMedia(id: String!, autosave: Boolean, data: mutationMediaUpdateInput!, draft: Boolean): Media
+  createMedia(data: mutationMediaInput!): Media
+  updateMedia(id: String!, autosave: Boolean, data: mutationMediaUpdateInput!): Media
   deleteMedia(id: String!): Media
-  createCategory(data: mutationCategoryInput!, draft: Boolean): Category
-  updateCategory(id: String!, autosave: Boolean, data: mutationCategoryUpdateInput!, draft: Boolean): Category
+  createCategory(data: mutationCategoryInput!): Category
+  updateCategory(id: String!, autosave: Boolean, data: mutationCategoryUpdateInput!): Category
   deleteCategory(id: String!): Category
   createUser(data: mutationUserInput!, draft: Boolean): User
   updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean): User
@@ -12239,11 +11714,11 @@ type Mutation {
   forgotPasswordUser(disableEmail: Boolean, email: String!, expiration: Int): Boolean!
   resetPasswordUser(password: String, token: String): usersResetPassword
   verifyEmailUser(token: String): Boolean
-  createRedirect(data: mutationRedirectInput!, draft: Boolean): Redirect
-  updateRedirect(id: String!, autosave: Boolean, data: mutationRedirectUpdateInput!, draft: Boolean): Redirect
+  createRedirect(data: mutationRedirectInput!): Redirect
+  updateRedirect(id: String!, autosave: Boolean, data: mutationRedirectUpdateInput!): Redirect
   deleteRedirect(id: String!): Redirect
-  createPayloadPreference(data: mutationPayloadPreferenceInput!, draft: Boolean): PayloadPreference
-  updatePayloadPreference(id: String!, autosave: Boolean, data: mutationPayloadPreferenceUpdateInput!, draft: Boolean): PayloadPreference
+  createPayloadPreference(data: mutationPayloadPreferenceInput!): PayloadPreference
+  updatePayloadPreference(id: String!, autosave: Boolean, data: mutationPayloadPreferenceUpdateInput!): PayloadPreference
   deletePayloadPreference(id: String!): PayloadPreference
   updateSettings(data: mutationSettingsInput!, draft: Boolean): Settings
   updateHeader(data: mutationHeaderInput!, draft: Boolean): Header
@@ -12497,37 +11972,19 @@ input mutationMediaUpdateInput {
 input mutationCategoryInput {
   title: String!
   media: String
-  parent: String
-  breadcrumbs: [mutationCategory_BreadcrumbsInput]
   updatedAt: String
   createdAt: String
-}
-
-input mutationCategory_BreadcrumbsInput {
-  doc: String
-  url: String
-  label: String
-  id: String
 }
 
 input mutationCategoryUpdateInput {
   title: String
   media: String
-  parent: String
-  breadcrumbs: [mutationCategoryUpdate_BreadcrumbsInput]
   updatedAt: String
   createdAt: String
 }
 
-input mutationCategoryUpdate_BreadcrumbsInput {
-  doc: String
-  url: String
-  label: String
-  id: String
-}
-
 input mutationUserInput {
-  name: String
+  name: String!
   credits: Float!
   roles: [User_roles_MutationInput]
   purchases: [String]

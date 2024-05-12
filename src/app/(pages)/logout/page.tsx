@@ -29,10 +29,10 @@ export default async function Logout() {
 }
 
 export const metadata: Metadata = {
-  title: 'Выйти',
+  title: 'Выход',
   description: 'Вы вышли из аккаунта.',
   openGraph: mergeOpenGraph({
-    title: 'Выйти',
+    title: 'Выход',
     url: '/logout',
   }),
 }

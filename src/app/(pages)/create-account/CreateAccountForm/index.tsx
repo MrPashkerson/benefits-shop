@@ -65,7 +65,9 @@ const CreateAccountForm: React.FC = () => {
         else router.push(`/account?success=${encodeURIComponent('Account created successfully')}`)
       } catch (_) {
         clearTimeout(timer)
-        setError('There was an error with the credentials provided. Please try again.')
+        setError(
+          'Произошла ошибка с предоставленными учетными данными. Пожалуйста, попробуйте еще раз.',
+        )
       }
     },
     [login, router, searchParams],
@@ -73,15 +75,10 @@ const CreateAccountForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-      <p>
-        {`This is where new customers can signup and create a new account. To manage all users, `}
-        <Link href="/admin/collections/users">login to the admin dashboard</Link>
-        {'.'}
-      </p>
       <Message error={error} className={classes.message} />
       <Input
         name="email"
-        label="Email Address"
+        label="Email"
         required
         register={register}
         error={errors.email}
@@ -90,7 +87,7 @@ const CreateAccountForm: React.FC = () => {
       <Input
         name="password"
         type="password"
-        label="Password"
+        label="Пароль"
         required
         register={register}
         error={errors.password}
@@ -98,22 +95,24 @@ const CreateAccountForm: React.FC = () => {
       <Input
         name="passwordConfirm"
         type="password"
-        label="Confirm Password"
+        label="Подтвердите пароль"
         required
         register={register}
-        validate={value => value === password.current || 'The passwords do not match'}
+        validate={value => value === password.current || 'Пароли не совпадают'}
         error={errors.passwordConfirm}
       />
       <Button
         type="submit"
-        label={loading ? 'Processing' : 'Create Account'}
+        label={loading ? 'Обработка' : 'Создать аккаунт'}
         disabled={loading}
         appearance="primary"
         className={classes.submit}
       />
       <div>
-        {'Already have an account? '}
-        <Link href={`/login${allParams}`}>Login</Link>
+        {'Уже есть аккаунт? '}
+        <Link href={`/login${allParams}`}>
+          <u>Зайти</u>
+        </Link>
       </div>
     </form>
   )

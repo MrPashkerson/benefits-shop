@@ -34,10 +34,10 @@ export default async function MessageComponentPage() {
 }
 
 export const metadata: Metadata = {
-  title: 'Message Component',
-  description: 'Styleguide for message component.',
+  title: 'Компонент сообщения',
+  description: 'Руководство по стилю для компонента сообщения.',
   openGraph: mergeOpenGraph({
-    title: 'Message Component',
+    title: 'Компонент сообщения',
     url: '/styleguide/message',
   }),
 }

@@ -9,12 +9,18 @@ import { fetchDocs } from '../../../_api/fetchDocs'
 import { Blocks } from '../../../_components/Blocks'
 import { ProductHero } from '../../../_heros/Product'
 import { generateMeta } from '../../../_utilities/generateMeta'
+import {getMeUser} from "../../../_utilities/getMeUser";
 
 // Force this page to be dynamic so that Next.js does not cache it
 // See the note in '../../../[slug]/page.tsx' about this
 export const dynamic = 'force-dynamic'
 
 export default async function Product({ params: { slug } }) {
+  const { token } = await getMeUser({
+    nullUserRedirect: `/login?error=${encodeURIComponent(
+      'Вы должны войти в систему, чтобы просмотреть льготу из каталога.',
+    )}&redirect=${encodeURIComponent(`/products/${slug}`)}`,
+  })
   const { isEnabled: isDraftMode } = draftMode()
 
   let product: Product | null = null

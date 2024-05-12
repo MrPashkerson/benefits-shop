@@ -90,10 +90,10 @@ export default async function CallToActionPage() {
 }
 
 export const metadata: Metadata = {
-  title: 'Call To Action Block',
-  description: 'Styleguide for the Call To Action Block',
+  title: 'Блок призыва к действию',
+  description: 'Руководство по стилю для блока Призыв к действию',
   openGraph: mergeOpenGraph({
-    title: 'Call To Action Block',
+    title: 'Блок призыва к действию',
     url: '/styleguide/call-to-action',
   }),
 }

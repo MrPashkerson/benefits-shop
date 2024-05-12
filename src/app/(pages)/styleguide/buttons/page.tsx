@@ -33,10 +33,10 @@ export default async function ButtonsPage() {
 }
 
 export const metadata: Metadata = {
-  title: 'Buttons',
-  description: 'Styleguide for Buttons',
+  title: 'Кнопки',
+  description: 'Стили кнопок',
   openGraph: mergeOpenGraph({
-    title: 'Buttons',
+    title: 'Кнопки',
     url: '/styleguide/buttons',
   }),
 }

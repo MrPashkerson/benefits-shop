@@ -49,7 +49,7 @@ export default async function Login() {
 
 export const metadata: Metadata = {
   title: 'Войти',
-  description: 'Войти, чтобы начать.',
+  description: 'Войдите, чтобы начать.',
   openGraph: mergeOpenGraph({
     title: 'Войти',
     url: '/login',

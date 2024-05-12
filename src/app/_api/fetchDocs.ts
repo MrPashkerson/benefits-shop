@@ -31,7 +31,7 @@ export const fetchDocs = async <T>(
   collection: keyof Config['collections'],
   draft?: boolean,
 ): Promise<T[]> => {
-  if (!queryMap[collection]) throw new Error(`Collection ${collection} not found`)
+  if (!queryMap[collection]) throw new Error(`Коллекция ${collection} не найдена`)
 
   let token: RequestCookie | undefined
 
@@ -54,7 +54,7 @@ export const fetchDocs = async <T>(
   })
     ?.then(res => res.json())
     ?.then(res => {
-      if (res.errors) throw new Error(res?.errors?.[0]?.message ?? 'Error fetching docs')
+      if (res.errors) throw new Error(res?.errors?.[0]?.message ?? 'Ошибка при получении документа')
 
       return res?.data?.[queryMap[collection].key]?.docs
     })

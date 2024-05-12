@@ -12,12 +12,18 @@ import { generateMeta } from '../../_utilities/generateMeta'
 import { CartPage } from './CartPage'
 
 import classes from './index.module.scss'
+import {getMeUser} from "../../_utilities/getMeUser";
 
 // Force this page to be dynamic so that Next.js does not cache it
 // See the note in '../[slug]/page.tsx' about this
 export const dynamic = 'force-dynamic'
 
 export default async function Cart() {
+  const { token } = await getMeUser({
+    nullUserRedirect: `/login?error=${encodeURIComponent(
+      'Вы должны войти в систему, чтобы перейти в корзину.',
+    )}&redirect=${encodeURIComponent(`/cart`)}`,
+  })
   let page: Page | null = null
 
   try {

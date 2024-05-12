@@ -38,12 +38,16 @@ export const LogoutPage: React.FC<{
             {typeof productsPage === 'object' && productsPage?.slug && (
               <Fragment>
                 {' '}
-                <Link href={`/${productsPage.slug}`}>Нажмите сюда</Link>
+                <Link href={`/${productsPage.slug}`}>
+                  <u>Нажмите сюда</u>
+                </Link>
                 {`, чтобы перейти в магазин.`}
               </Fragment>
             )}
             {` Чтобы войти в аккаунт, `}
-            <Link href="/login">нажмите сюда</Link>
+            <Link href="/login">
+              <u>нажмите сюда</u>
+            </Link>
             {'.'}
           </p>
         </div>

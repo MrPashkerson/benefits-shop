@@ -13,6 +13,7 @@ import classes from './index.module.scss'
 
 type FormData = {
   password: string
+  confirmPassword: string
   token: string
 }
 
@@ -28,10 +29,20 @@ export const ResetPasswordForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>()
+    watch,
+  } = useForm<FormData>({
+    mode: 'onChange',
+  })
+
+  const password = watch('password')
 
   const onSubmit = useCallback(
     async (data: FormData) => {
+      if (data.password !== data.confirmPassword) {
+        setError('Пароли не совпадают.')
+        return
+      }
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/reset-password`,
         {
@@ -51,7 +62,6 @@ export const ResetPasswordForm: React.FC = () => {
 
         // Redirect them to `/account` with success message in URL
         router.push('/account?success=Password reset successfully.')
-        window.location.href = '/account'
       } else {
         setError(
           'При восстановлении пароля возникла проблема. Пожалуйста, повторите попытку позже.',
@@ -77,6 +87,14 @@ export const ResetPasswordForm: React.FC = () => {
         required
         register={register}
         error={errors.password}
+      />
+      <Input
+        name="confirmPassword"
+        type="password"
+        label="Подтвердите пароль"
+        required
+        register={register}
+        error={errors.confirmPassword && 'Пароли не совпадают'}
       />
       <input type="hidden" {...register('token')} />
       <Button

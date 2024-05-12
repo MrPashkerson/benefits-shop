@@ -7,11 +7,17 @@ import { fetchDocs } from '../../_api/fetchDocs'
 import { Blocks } from '../../_components/Blocks'
 import { Gutter } from '../../_components/Gutter'
 import { HR } from '../../_components/HR'
+import { getMeUser } from '../../_utilities/getMeUser'
 import Filters from './Filters'
 
 import classes from './index.module.scss'
 
 const Products = async () => {
+  const { token } = await getMeUser({
+    nullUserRedirect: `/login?error=${encodeURIComponent(
+      'Вы должны войти в систему, чтобы просмотреть каталог.',
+    )}&redirect=${encodeURIComponent(`/products`)}`,
+  })
   const { isEnabled: isDraftMode } = draftMode()
 
   let page: Page | null = null

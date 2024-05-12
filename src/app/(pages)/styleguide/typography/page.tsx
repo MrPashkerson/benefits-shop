@@ -45,10 +45,10 @@ export default async function Typography() {
 }
 
 export const metadata: Metadata = {
-  title: 'Typography',
-  description: 'Styleguide for typography.',
+  title: 'Типографика',
+  description: 'Руководство по стилю для типографики.',
   openGraph: mergeOpenGraph({
-    title: 'Typography',
+    title: 'Типографика',
     url: '/styleguide/typography',
   }),
 }

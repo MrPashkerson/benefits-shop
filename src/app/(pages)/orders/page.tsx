@@ -17,7 +17,7 @@ import classes from './index.module.scss'
 export default async function Orders() {
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view your orders.',
+      'Вы должны войти в систему, чтобы просмотреть свои заказы.',
     )}&redirect=${encodeURIComponent('/orders')}`,
   })
 
@@ -88,10 +88,10 @@ export default async function Orders() {
 }
 
 export const metadata: Metadata = {
-  title: 'Orders',
-  description: 'Your orders.',
+  title: 'Заказы',
+  description: 'Ваши заказы.',
   openGraph: mergeOpenGraph({
-    title: 'Orders',
+    title: 'Заказы',
     url: '/orders',
   }),
 }

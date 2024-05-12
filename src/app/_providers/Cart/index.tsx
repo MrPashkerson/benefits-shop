@@ -175,7 +175,7 @@ export const CartProvider = props => {
 
         syncCartToPayload()
       } catch (e) {
-        console.error('Error while syncing cart to Payload.') // eslint-disable-line no-console
+        console.error('Ошибка при синхронизации корзины с сервером.') // eslint-disable-line no-console
       }
     } else {
       localStorage.setItem('cart', JSON.stringify(flattenedCart))

@@ -11,7 +11,7 @@ export default async function ResetPassword() {
   return (
     <Gutter className={classes.resetPassword}>
       <h1>Сброс пароля</h1>
-      <p>Пожалуйста, введите новый пароль ниже.</p>
+      <p className={classes.margin_bottom_30}>Пожалуйста, введите новый пароль ниже.</p>
       <ResetPasswordForm />
     </Gutter>
   )

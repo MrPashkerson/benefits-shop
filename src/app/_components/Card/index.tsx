@@ -22,7 +22,7 @@ export const Card: React.FC<{
     showCategories,
     title: titleFromProps,
     doc,
-    doc: { slug, title, categories, meta, price } = {},
+    doc: { slug, title, categories, meta } = {},
     className,
   } = props
 
@@ -46,7 +46,7 @@ export const Card: React.FC<{
         {titleToUse && <h4 className={classes.title}>{titleToUse}</h4>}
         {description && (
           <div className={classes.body}>
-            {description && <p className={classes.description}>{sanitizedDescription}</p>}
+            <p className={classes.description}>{sanitizedDescription}</p>
           </div>
         )}
         {doc && <Price product={doc} />}

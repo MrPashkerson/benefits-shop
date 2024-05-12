@@ -31,6 +31,7 @@ export const PRODUCT = `
           slug
           title
           ${META}
+          price
         }
         ${META}
       }

@@ -2,6 +2,8 @@
 
 import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { Button } from '../../../_components/Button'
@@ -10,8 +12,6 @@ import { Message } from '../../../_components/Message'
 import { useAuth } from '../../../_providers/Auth'
 
 import classes from './index.module.scss'
-import Image from "next/image";
-import Link from "next/link";
 
 type FormData = {
   email: string
@@ -76,7 +76,7 @@ const AccountForm: React.FC = () => {
     if (user === null) {
       router.push(
         `/login?error=${encodeURIComponent(
-          'You must be logged in to view this page.',
+          'Вы должны войти в систему, чтобы посмотреть эту страницу.',
         )}&redirect=${encodeURIComponent('/account')}`,
       )
     }
@@ -95,59 +95,60 @@ const AccountForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <Message error={error} success={success} className={classes.message} />
-      {!changePassword ? (
-        <Fragment>
-          <p>
-            <button
-              type="button"
-              className={classes.changePassword}
-              onClick={() => setChangePassword(!changePassword)}
-            >
-              <u>Нажмите здесь</u>, если хотите изменить пароль.
-            </button>
-          </p>
+      {/*{!changePassword ? (*/}
+      {/*  <Fragment>*/}
+      {/*    <p>*/}
+      {/*      <button*/}
+      {/*        type="button"*/}
+      {/*        className={classes.changePassword}*/}
+      {/*        onClick={() => setChangePassword(!changePassword)}*/}
+      {/*      >*/}
+      {/*        <u>Нажмите здесь</u>, если хотите изменить пароль.*/}
+      {/*      </button>*/}
+      {/*    </p>*/}
 
-          <Input
-            name="email"
-            label="Email"
-            required
-            register={register}
-            error={errors.email}
-            type="email"
-          />
-          <Input name="name" label="Имя" register={register} error={errors.name} />
-        </Fragment>
-      ) : (
-        <Fragment>
-          <p>
-            <button
-              type="button"
-              className={classes.changePassword}
-              onClick={() => setChangePassword(!changePassword)}
-            >
-              <Image src="/assets/icons/arrow-left.svg" alt="left arrow" width={18} height={18} />
-              <p>Назад</p>
-            </button>
-          </p>
-          <Input
-            name="password"
-            type="password"
-            label="Новый пароль"
-            required
-            register={register}
-            error={errors.password}
-          />
-          <Input
-            name="passwordConfirm"
-            type="password"
-            label="Повторите пароль"
-            required
-            register={register}
-            validate={value => value === password.current || 'The passwords do not match'}
-            error={errors.passwordConfirm}
-          />
-        </Fragment>
-      )}
+      {/*    <Input*/}
+      {/*      name="email"*/}
+      {/*      label="Email"*/}
+      {/*      required*/}
+      {/*      register={register}*/}
+      {/*      error={errors.email}*/}
+      {/*      type="email"*/}
+      {/*    />*/}
+      {/*    <Input name="name" label="Имя" register={register} error={errors.name} />*/}
+      {/*  </Fragment>*/}
+      {/*) : (*/}
+      <Fragment>
+        <p>
+          Изменить пароль
+          {/*<button*/}
+          {/*  type="button"*/}
+          {/*  className={classes.changePassword}*/}
+          {/*  onClick={() => setChangePassword(!changePassword)}*/}
+          {/*>*/}
+          {/*  <Image src="/assets/icons/arrow-left.svg" alt="left arrow" width={18} height={18} />*/}
+          {/*  <p>Назад</p>*/}
+          {/*</button>*/}
+        </p>
+        <Input
+          name="password"
+          type="password"
+          label="Новый пароль"
+          required
+          register={register}
+          error={errors.password}
+        />
+        <Input
+          name="passwordConfirm"
+          type="password"
+          label="Повторите пароль"
+          required
+          register={register}
+          validate={value => value === password.current || 'The passwords do not match'}
+          error={errors.passwordConfirm}
+        />
+      </Fragment>
+      {/*)}*/}
       <Button
         type="submit"
         label={isLoading ? 'Обработка' : changePassword ? 'Сохранить' : 'Сохранить'}

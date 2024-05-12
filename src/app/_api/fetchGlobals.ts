@@ -3,7 +3,7 @@ import { FOOTER_QUERY, HEADER_QUERY, SETTINGS_QUERY } from '../_graphql/globals'
 import { GRAPHQL_API_URL } from './shared'
 
 export async function fetchSettings(): Promise<Settings> {
-  if (!process.env.NEXT_PUBLIC_SERVER_URL) throw new Error('NEXT_PUBLIC_SERVER_URL not found')
+  if (!process.env.NEXT_PUBLIC_SERVER_URL) throw new Error('NEXT_PUBLIC_SERVER_URL не найден')
 
   const settings = await fetch(`${GRAPHQL_API_URL}/api/graphql`, {
     method: 'POST',
@@ -16,11 +16,11 @@ export async function fetchSettings(): Promise<Settings> {
     }),
   })
     ?.then(res => {
-      if (!res.ok) throw new Error('Error fetching doc')
+      if (!res.ok) throw new Error('Ошибка при получении документа')
       return res.json()
     })
     ?.then(res => {
-      if (res?.errors) throw new Error(res?.errors[0]?.message || 'Error fetching settings')
+      if (res?.errors) throw new Error(res?.errors[0]?.message || 'Ошибка при получении настроек')
       return res.data?.Settings
     })
 
@@ -28,7 +28,7 @@ export async function fetchSettings(): Promise<Settings> {
 }
 
 export async function fetchHeader(): Promise<Header> {
-  if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL not found')
+  if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL не найден')
 
   const header = await fetch(`${GRAPHQL_API_URL}/api/graphql`, {
     method: 'POST',
@@ -41,11 +41,11 @@ export async function fetchHeader(): Promise<Header> {
     }),
   })
     ?.then(res => {
-      if (!res.ok) throw new Error('Error fetching doc')
+      if (!res.ok) throw new Error('Ошибка при получении документа')
       return res.json()
     })
     ?.then(res => {
-      if (res?.errors) throw new Error(res?.errors[0]?.message || 'Error fetching header')
+      if (res?.errors) throw new Error(res?.errors[0]?.message || 'Ошибка при получении заголовка')
       return res.data?.Header
     })
 
@@ -53,7 +53,7 @@ export async function fetchHeader(): Promise<Header> {
 }
 
 export async function fetchFooter(): Promise<Footer> {
-  if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL not found')
+  if (!GRAPHQL_API_URL) throw new Error('NEXT_PUBLIC_SERVER_URL не найден')
 
   const footer = await fetch(`${GRAPHQL_API_URL}/api/graphql`, {
     method: 'POST',
@@ -65,11 +65,11 @@ export async function fetchFooter(): Promise<Footer> {
     }),
   })
     .then(res => {
-      if (!res.ok) throw new Error('Error fetching doc')
+      if (!res.ok) throw new Error('Ошибка при получении документа')
       return res.json()
     })
     ?.then(res => {
-      if (res?.errors) throw new Error(res?.errors[0]?.message || 'Error fetching footer')
+      if (res?.errors) throw new Error(res?.errors[0]?.message || 'Ошибка при получении подвала')
       return res.data?.Footer
     })
 

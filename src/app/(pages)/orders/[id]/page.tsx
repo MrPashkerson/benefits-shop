@@ -18,7 +18,7 @@ import classes from './index.module.scss'
 export default async function Order({ params: { id } }) {
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view this order.',
+      'Вы должны войти в систему, чтобы просмотреть этот заказ.',
     )}&redirect=${encodeURIComponent(`/order/${id}`)}`,
   })
 
@@ -48,7 +48,7 @@ export default async function Order({ params: { id } }) {
   return (
     <Gutter className={classes.orders}>
       <h1>
-        {`Order`}
+        {`Заказ`}
         <span className={classes.id}>{`${order.id}`}</span>
       </h1>
       <div className={classes.itemMeta}>
@@ -95,7 +95,7 @@ export default async function Order({ params: { id } }) {
                         {title}
                       </Link>
                     </h5>
-                    <p>{`Quantity: ${quantity}`}</p>
+                    <p>{`Количество: ${quantity}`}</p>
                     <Price product={product} button={false} quantity={quantity} />
                   </div>
                 </div>
@@ -118,10 +118,10 @@ export default async function Order({ params: { id } }) {
 
 export async function generateMetadata({ params: { id } }): Promise<Metadata> {
   return {
-    title: `Order ${id}`,
-    description: `Order details for order ${id}.`,
+    title: `Заказ ${id}`,
+    description: `Детали заказа для заказа ${id}.`,
     openGraph: mergeOpenGraph({
-      title: `Order ${id}`,
+      title: `Заказ ${id}`,
       url: `/orders/${id}`,
     }),
   }

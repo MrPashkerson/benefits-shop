@@ -35,10 +35,10 @@ export default async function MediaBlockPage() {
 }
 
 export const metadata: Metadata = {
-  title: 'Media Block',
-  description: 'Styleguide for media block.',
+  title: 'Медиа блок',
+  description: 'Руководство по стилю для медиаблока.',
   openGraph: mergeOpenGraph({
-    title: 'Media Block',
+    title: 'Медиа блок',
     url: '/styleguide/media-block',
   }),
 }

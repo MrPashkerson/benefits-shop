@@ -16,7 +16,7 @@ import classes from './index.module.scss'
 export default async function Order({ params: { id } }) {
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
-      'You must be logged in to view this order.',
+      'Вы должны войти в систему, чтобы просмотреть этот заказ.',
     )}&redirect=${encodeURIComponent(`/order/${id}`)}`,
   })
 
