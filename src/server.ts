@@ -11,6 +11,8 @@ import express from 'express'
 import payload from 'payload'
 
 import { seed } from './payload/seed'
+import { creditUsers, resetCredits } from './payload/utilities/scheduledTasks';
+import cron from "node-cron";
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -36,6 +38,8 @@ const start = async (): Promise<void> => {
     express: app,
     onInit: () => {
       payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
+      cron.schedule(process.env.CREDIT_USERS_TIME, creditUsers)
+      cron.schedule(process.env.RESET_USER_CREDITS_TIME, resetCredits)
     },
   })
 
