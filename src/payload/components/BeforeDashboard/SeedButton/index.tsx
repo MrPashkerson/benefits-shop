@@ -49,7 +49,7 @@ export const SeedButton: React.FC = () => {
   return (
     <Fragment>
       <a href="/api/seed" target="_blank" rel="noopener noreferrer" onClick={handleClick}>
-        Нажмите сюда, чтобы произвести первичную настройку панели админитсратора
+        Нажмите сюда, чтобы произвести первичную настройку БД и панели администратора
       </a>
       {message}
     </Fragment>
