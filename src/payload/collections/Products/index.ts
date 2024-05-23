@@ -9,7 +9,7 @@ import { slugField } from '../../fields/slug'
 import { populateArchiveBlock } from '../../hooks/populateArchiveBlock'
 import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
 import { revalidateProduct } from './hooks/revalidateProduct'
-import {adminsOrPublished} from "./access/adminsOrPublished";
+import { adminsOrPublished } from './access/adminsOrPublished'
 
 const Products: CollectionConfig = {
   slug: 'products',
