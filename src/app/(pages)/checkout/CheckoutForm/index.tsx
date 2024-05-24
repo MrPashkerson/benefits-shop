@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import { Button } from '../../../_components/Button'
 import { Message } from '../../../_components/Message'
+import { useAuth } from '../../../_providers/Auth'
 import { useCart } from '../../../_providers/Cart'
 
 import classes from './index.module.scss'
@@ -14,6 +15,7 @@ export const CheckoutForm: React.FC<{}> = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const router = useRouter()
   const { cart, cartTotal } = useCart()
+  const { updateUserCredits } = useAuth()
 
   const handleSubmit = useCallback(
     async e => {
@@ -65,6 +67,7 @@ export const CheckoutForm: React.FC<{}> = () => {
               throw new Error(orderReq.statusText || 'Что-то пошло не так при создании заказа.')
 
             const orderRes = await orderReq.json()
+            updateUserCredits()
             router.push(`/order-confirmation?order_id=${orderRes.doc.id}`)
           } catch (err) {
             // don't throw an error if the order was not created successfully
@@ -81,7 +84,7 @@ export const CheckoutForm: React.FC<{}> = () => {
         setIsLoading(false)
       }
     },
-    [router, cart, cartTotal],
+    [router, cart, cartTotal, updateUserCredits],
   )
 
   return (

@@ -22,6 +22,7 @@ type Logout = () => Promise<void>
 type AuthContext = {
   user?: User | null
   setUser: (user: User | null) => void // eslint-disable-line no-unused-vars
+  updateUserCredits: () => void
   logout: Logout
   login: Login
   create: Create
@@ -38,6 +39,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // used to track the single event of logging in or logging out
   // useful for `useEffect` hooks that should only run once
   const [status, setStatus] = useState<undefined | 'loggedOut' | 'loggedIn'>()
+
+  const updateUserCredits = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (res.ok) {
+        const { user: meUser } = await res.json()
+        setUser(meUser || null)
+      } else {
+        throw new Error('При получении данных о вашей учетной записи произошла ошибка.')
+      }
+    } catch (e) {
+      throw new Error('При получении данных о вашей учетной записи произошла ошибка.')
+    }
+  }
+
   const create = useCallback<Create>(async args => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/create`, {
@@ -200,6 +223,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         user,
         setUser,
+        updateUserCredits,
         login,
         logout,
         create,

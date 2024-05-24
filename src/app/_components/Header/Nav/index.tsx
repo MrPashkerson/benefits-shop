@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { Header as HeaderType, User } from '../../../../payload/payload-types'
@@ -17,6 +18,7 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
 
   return (
     <nav className={[classes.nav, user === undefined && classes.hide].filter(Boolean).join(' ')}>
+      {user && <p>{user.credits} б.</p>}
       {navItems.map(({ link }, i) => {
         return <CMSLink key={i} {...link} appearance="none"/>
       })}
@@ -31,7 +33,11 @@ export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
           onClick={() => (window.location.href = '/login')}
         />
       )}
-      {user && <p>{user.credits} б.</p>}
+      {user && (
+        <Link href="/logout" className={classes.navItem}>
+          <Image src="/assets/icons/logout.svg" alt="Выйти" width={24} height={24} />
+        </Link>
+      )}
     </nav>
   )
 }

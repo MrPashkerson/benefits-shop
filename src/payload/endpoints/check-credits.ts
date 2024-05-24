@@ -66,7 +66,7 @@ export const checkCredits: PayloadHandler = async (req, res): Promise<void> => {
       },
     })
 
-    res.status(200).json({ canProceed: true })
+    res.status(200).json({ canProceed: true, newCredits: updatedCredits })
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Неизвестная ошибка'
     payload.logger.error(message)

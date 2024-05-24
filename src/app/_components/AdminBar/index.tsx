@@ -38,7 +38,14 @@ export const AdminBar: React.FC<{
   return (
     <div className={[classes.adminBar, show && classes.show].filter(Boolean).join(' ')}>
       <Gutter className={classes.blockContainer}>
-        <p className={classes.userRole}>Администратор&nbsp;&nbsp;</p>
+        <p className={classes.userRole}>
+          {user.roles
+            .find(role => role === 'manager' || 'admin')
+            .replace('admin', 'Администратор')
+            .replace('manager', 'Менеджер')
+            .replace('customer', 'Менеджер')}
+          &nbsp;&nbsp;
+        </p>
         <PayloadAdminBar
           {...adminBarProps}
           key={user?.id} // use key to get the admin bar to re-run its `me` request
