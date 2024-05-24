@@ -339,7 +339,7 @@ export interface User {
   id: string;
   name: string;
   credits: number;
-  roles?: ('admin' | 'customer')[] | null;
+  roles?: ('admin' | 'customer' | 'manager')[] | null;
   purchases?: (string | Product)[] | null;
   cart?: {
     items?: CartItems;

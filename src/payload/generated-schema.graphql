@@ -4635,6 +4635,7 @@ type User {
 enum User_roles {
   admin
   customer
+  manager
 }
 
 type User_Cart {
@@ -5803,6 +5804,7 @@ input User_roles_operator {
 enum User_roles_Input {
   admin
   customer
+  manager
 }
 
 input User_purchases_operator {
@@ -6390,6 +6392,7 @@ type UserVersion_Version {
 enum UserVersion_Version_roles {
   admin
   customer
+  manager
 }
 
 type UserVersion_Version_Cart {
@@ -6484,6 +6487,7 @@ input versionsUser_version__roles_operator {
 enum versionsUser_version__roles_Input {
   admin
   customer
+  manager
 }
 
 input versionsUser_version__purchases_operator {
@@ -12006,6 +12010,7 @@ input mutationUserInput {
 enum User_roles_MutationInput {
   admin
   customer
+  manager
 }
 
 input mutationUser_CartInput {
@@ -12046,6 +12051,7 @@ input mutationUserUpdateInput {
 enum UserUpdate_roles_MutationInput {
   admin
   customer
+  manager
 }
 
 input mutationUserUpdate_CartInput {

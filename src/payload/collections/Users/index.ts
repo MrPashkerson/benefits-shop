@@ -5,6 +5,7 @@ import ResetPasswordEmail from '../../components/ResetPasswordEmail'
 import adminsAndUser from './access/adminsAndUser'
 import { checkRole } from './checkRole'
 import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
+import { ensureManagerIsAdmin } from './hooks/ensureManagerIsAdmin'
 import { loginAfterCreate } from './hooks/loginAfterCreate'
 import { resolveDuplicatePurchases } from './hooks/resolveDuplicatePurchases'
 
@@ -76,9 +77,13 @@ const Users: CollectionConfig = {
           label: 'Пользователь',
           value: 'customer',
         },
+        {
+          label: 'Менеджер',
+          value: 'manager',
+        },
       ],
       hooks: {
-        beforeChange: [ensureFirstUserIsAdmin],
+        beforeChange: [ensureFirstUserIsAdmin, ensureManagerIsAdmin],
       },
       access: {
         read: admins,
