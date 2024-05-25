@@ -8,6 +8,7 @@ export const product9: Partial<Product> = {
     image: '{{PRODUCT_IMAGE}}',
   },
   price: 120,
+  realPrice: 120,
   _status: 'published',
   layout: [],
   categories: '{{PRODUCT_CATEGORY}}',

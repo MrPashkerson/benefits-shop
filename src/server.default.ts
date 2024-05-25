@@ -10,11 +10,11 @@ dotenv.config({
 })
 
 import express from 'express'
+import cron from 'node-cron'
 import payload from 'payload'
 
 import { seed } from './payload/seed'
-import cron from "node-cron";
-import {creditUsers, resetCredits} from "./payload/utilities/scheduledTasks";
+import { creditUsers, resetCredits } from './payload/utilities/scheduledTasks'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -45,8 +45,6 @@ const start = async (): Promise<void> => {
     express: app,
     onInit: () => {
       payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
-      cron.schedule(process.env.CREDIT_USERS_TIME, creditUsers)
-      cron.schedule(process.env.RESET_USER_CREDITS_TIME, resetCredits)
     },
   })
 
@@ -54,6 +52,19 @@ const start = async (): Promise<void> => {
     await seed(payload)
     process.exit()
   }
+
+  const creditUsersTime = process.env.CREDIT_USERS_TIME.replace(/['"`]/g, '') || '0 3 1 * *'
+  const resetUserCreditsTime =
+    process.env.RESET_USER_CREDITS_TIME.replace(/['"`]/g, '') || '0 0 1 1 * *'
+
+  cron.schedule(creditUsersTime, () => {
+    payload.logger.info('Running creditUsers task...')
+    creditUsers()
+  })
+  cron.schedule(resetUserCreditsTime, () => {
+    payload.logger.info('Running resetCredits task...')
+    resetCredits()
+  })
 
   app.listen(PORT, async () => {
     payload.logger.info(`App URL: ${process.env.PAYLOAD_PUBLIC_SERVER_URL}`)

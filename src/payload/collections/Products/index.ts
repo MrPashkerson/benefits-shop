@@ -7,9 +7,10 @@ import { Content } from '../../blocks/Content'
 import { MediaBlock } from '../../blocks/MediaBlock'
 import { slugField } from '../../fields/slug'
 import { populateArchiveBlock } from '../../hooks/populateArchiveBlock'
+import { adminsOrPublished } from './access/adminsOrPublished'
 import { deleteProductFromCarts } from './hooks/deleteProductFromCarts'
 import { revalidateProduct } from './hooks/revalidateProduct'
-import { adminsOrPublished } from './access/adminsOrPublished'
+import { updateCreditsPrice } from './hooks/updateCreditsPrice'
 
 const Products: CollectionConfig = {
   slug: 'products',
@@ -27,7 +28,7 @@ const Products: CollectionConfig = {
     },
   },
   hooks: {
-    afterChange: [revalidateProduct],
+    afterChange: [revalidateProduct, updateCreditsPrice],
     afterRead: [populateArchiveBlock],
     afterDelete: [deleteProductFromCarts],
   },
@@ -76,7 +77,15 @@ const Products: CollectionConfig = {
     },
     {
       name: 'price',
-      label: 'Цена',
+      label: 'Цена в баллах',
+      type: 'number',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'realPrice',
+      label: 'Цена в рублях',
       type: 'number',
       required: true,
     },

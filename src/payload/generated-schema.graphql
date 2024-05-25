@@ -45,6 +45,8 @@ type Query {
   docAccessHeader: headerDocAccess
   Footer(draft: Boolean): Footer
   docAccessFooter: footerDocAccess
+  LimitsSetting(draft: Boolean): LimitsSetting
+  docAccessLimitsSetting: limits_settingsDocAccess
   Access: Access
 }
 
@@ -1273,6 +1275,7 @@ type Product {
   publishedOn: DateTime
   layout: [Product_Layout!]
   price: Float
+  realPrice: Float
   categories: Category
   relatedProducts(draft: Boolean): [Product!]
   slug: String
@@ -3551,6 +3554,7 @@ input Product_where {
   title: Product_title_operator
   publishedOn: Product_publishedOn_operator
   price: Product_price_operator
+  realPrice: Product_realPrice_operator
   categories: Product_categories_operator
   relatedProducts: Product_relatedProducts_operator
   slug: Product_slug_operator
@@ -3588,6 +3592,16 @@ input Product_publishedOn_operator {
 }
 
 input Product_price_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input Product_realPrice_operator {
   equals: Float
   not_equals: Float
   greater_than_equal: Float
@@ -3707,6 +3721,7 @@ input Product_where_and {
   title: Product_title_operator
   publishedOn: Product_publishedOn_operator
   price: Product_price_operator
+  realPrice: Product_realPrice_operator
   categories: Product_categories_operator
   relatedProducts: Product_relatedProducts_operator
   slug: Product_slug_operator
@@ -3726,6 +3741,7 @@ input Product_where_or {
   title: Product_title_operator
   publishedOn: Product_publishedOn_operator
   price: Product_price_operator
+  realPrice: Product_realPrice_operator
   categories: Product_categories_operator
   relatedProducts: Product_relatedProducts_operator
   slug: Product_slug_operator
@@ -3759,6 +3775,7 @@ type ProductsDocAccessFields {
   publishedOn: ProductsDocAccessFields_publishedOn
   layout: ProductsDocAccessFields_layout
   price: ProductsDocAccessFields_price
+  realPrice: ProductsDocAccessFields_realPrice
   categories: ProductsDocAccessFields_categories
   relatedProducts: ProductsDocAccessFields_relatedProducts
   slug: ProductsDocAccessFields_slug
@@ -3858,6 +3875,29 @@ type ProductsDocAccessFields_price_Update {
 }
 
 type ProductsDocAccessFields_price_Delete {
+  permission: Boolean!
+}
+
+type ProductsDocAccessFields_realPrice {
+  create: ProductsDocAccessFields_realPrice_Create
+  read: ProductsDocAccessFields_realPrice_Read
+  update: ProductsDocAccessFields_realPrice_Update
+  delete: ProductsDocAccessFields_realPrice_Delete
+}
+
+type ProductsDocAccessFields_realPrice_Create {
+  permission: Boolean!
+}
+
+type ProductsDocAccessFields_realPrice_Read {
+  permission: Boolean!
+}
+
+type ProductsDocAccessFields_realPrice_Update {
+  permission: Boolean!
+}
+
+type ProductsDocAccessFields_realPrice_Delete {
   permission: Boolean!
 }
 
@@ -4160,6 +4200,7 @@ type ProductVersion_Version {
   publishedOn: DateTime
   layout: [ProductVersion_Version_Layout!]
   price: Float
+  realPrice: Float
   categories: Category
   relatedProducts(draft: Boolean): [Product!]
   slug: String
@@ -4364,6 +4405,7 @@ input versionsProduct_where {
   version__title: versionsProduct_version__title_operator
   version__publishedOn: versionsProduct_version__publishedOn_operator
   version__price: versionsProduct_version__price_operator
+  version__realPrice: versionsProduct_version__realPrice_operator
   version__categories: versionsProduct_version__categories_operator
   version__relatedProducts: versionsProduct_version__relatedProducts_operator
   version__slug: versionsProduct_version__slug_operator
@@ -4413,6 +4455,16 @@ input versionsProduct_version__publishedOn_operator {
 }
 
 input versionsProduct_version__price_operator {
+  equals: Float
+  not_equals: Float
+  greater_than_equal: Float
+  greater_than: Float
+  less_than_equal: Float
+  less_than: Float
+  exists: Boolean
+}
+
+input versionsProduct_version__realPrice_operator {
   equals: Float
   not_equals: Float
   greater_than_equal: Float
@@ -4561,6 +4613,7 @@ input versionsProduct_where_and {
   version__title: versionsProduct_version__title_operator
   version__publishedOn: versionsProduct_version__publishedOn_operator
   version__price: versionsProduct_version__price_operator
+  version__realPrice: versionsProduct_version__realPrice_operator
   version__categories: versionsProduct_version__categories_operator
   version__relatedProducts: versionsProduct_version__relatedProducts_operator
   version__slug: versionsProduct_version__slug_operator
@@ -4584,6 +4637,7 @@ input versionsProduct_where_or {
   version__title: versionsProduct_version__title_operator
   version__publishedOn: versionsProduct_version__publishedOn_operator
   version__price: versionsProduct_version__price_operator
+  version__realPrice: versionsProduct_version__realPrice_operator
   version__categories: versionsProduct_version__categories_operator
   version__relatedProducts: versionsProduct_version__relatedProducts_operator
   version__slug: versionsProduct_version__slug_operator
@@ -4616,6 +4670,8 @@ type User {
   name: String
   credits: Float
   roles: [User_roles!]
+  hireDate: DateTime
+  qualification: User_qualification
   purchases(draft: Boolean): [Product!]
   cart: User_Cart
   skipSync: Boolean
@@ -4636,6 +4692,18 @@ enum User_roles {
   admin
   customer
   manager
+}
+
+enum User_qualification {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
 }
 
 type User_Cart {
@@ -5759,6 +5827,8 @@ input User_where {
   name: User_name_operator
   credits: User_credits_operator
   roles: User_roles_operator
+  hireDate: User_hireDate_operator
+  qualification: User_qualification_operator
   purchases: User_purchases_operator
   cart__items__product: User_cart__items__product_operator
   cart__items__quantity: User_cart__items__quantity_operator
@@ -5805,6 +5875,36 @@ enum User_roles_Input {
   admin
   customer
   manager
+}
+
+input User_hireDate_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input User_qualification_operator {
+  equals: User_qualification_Input
+  not_equals: User_qualification_Input
+  in: [User_qualification_Input]
+  not_in: [User_qualification_Input]
+  all: [User_qualification_Input]
+}
+
+enum User_qualification_Input {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
 }
 
 input User_purchases_operator {
@@ -5913,6 +6013,8 @@ input User_where_and {
   name: User_name_operator
   credits: User_credits_operator
   roles: User_roles_operator
+  hireDate: User_hireDate_operator
+  qualification: User_qualification_operator
   purchases: User_purchases_operator
   cart__items__product: User_cart__items__product_operator
   cart__items__quantity: User_cart__items__quantity_operator
@@ -5931,6 +6033,8 @@ input User_where_or {
   name: User_name_operator
   credits: User_credits_operator
   roles: User_roles_operator
+  hireDate: User_hireDate_operator
+  qualification: User_qualification_operator
   purchases: User_purchases_operator
   cart__items__product: User_cart__items__product_operator
   cart__items__quantity: User_cart__items__quantity_operator
@@ -5963,6 +6067,8 @@ type UsersDocAccessFields {
   name: UsersDocAccessFields_name
   credits: UsersDocAccessFields_credits
   roles: UsersDocAccessFields_roles
+  hireDate: UsersDocAccessFields_hireDate
+  qualification: UsersDocAccessFields_qualification
   purchases: UsersDocAccessFields_purchases
   cart: UsersDocAccessFields_cart
   skipSync: UsersDocAccessFields_skipSync
@@ -6039,6 +6145,52 @@ type UsersDocAccessFields_roles_Update {
 }
 
 type UsersDocAccessFields_roles_Delete {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_hireDate {
+  create: UsersDocAccessFields_hireDate_Create
+  read: UsersDocAccessFields_hireDate_Read
+  update: UsersDocAccessFields_hireDate_Update
+  delete: UsersDocAccessFields_hireDate_Delete
+}
+
+type UsersDocAccessFields_hireDate_Create {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_hireDate_Read {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_hireDate_Update {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_hireDate_Delete {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_qualification {
+  create: UsersDocAccessFields_qualification_Create
+  read: UsersDocAccessFields_qualification_Read
+  update: UsersDocAccessFields_qualification_Update
+  delete: UsersDocAccessFields_qualification_Delete
+}
+
+type UsersDocAccessFields_qualification_Create {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_qualification_Read {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_qualification_Update {
+  permission: Boolean!
+}
+
+type UsersDocAccessFields_qualification_Delete {
   permission: Boolean!
 }
 
@@ -6373,6 +6525,8 @@ type UserVersion_Version {
   name: String
   credits: Float
   roles: [UserVersion_Version_roles!]
+  hireDate: DateTime
+  qualification: UserVersion_Version_qualification
   purchases(draft: Boolean): [Product!]
   cart: UserVersion_Version_Cart
   skipSync: Boolean
@@ -6393,6 +6547,18 @@ enum UserVersion_Version_roles {
   admin
   customer
   manager
+}
+
+enum UserVersion_Version_qualification {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
 }
 
 type UserVersion_Version_Cart {
@@ -6423,6 +6589,8 @@ input versionsUser_where {
   version__name: versionsUser_version__name_operator
   version__credits: versionsUser_version__credits_operator
   version__roles: versionsUser_version__roles_operator
+  version__hireDate: versionsUser_version__hireDate_operator
+  version__qualification: versionsUser_version__qualification_operator
   version__purchases: versionsUser_version__purchases_operator
   version__cart__items__product: versionsUser_version__cart__items__product_operator
   version__cart__items__quantity: versionsUser_version__cart__items__quantity_operator
@@ -6488,6 +6656,36 @@ enum versionsUser_version__roles_Input {
   admin
   customer
   manager
+}
+
+input versionsUser_version__hireDate_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+}
+
+input versionsUser_version__qualification_operator {
+  equals: versionsUser_version__qualification_Input
+  not_equals: versionsUser_version__qualification_Input
+  in: [versionsUser_version__qualification_Input]
+  not_in: [versionsUser_version__qualification_Input]
+  all: [versionsUser_version__qualification_Input]
+}
+
+enum versionsUser_version__qualification_Input {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
 }
 
 input versionsUser_version__purchases_operator {
@@ -6700,6 +6898,8 @@ input versionsUser_where_and {
   version__name: versionsUser_version__name_operator
   version__credits: versionsUser_version__credits_operator
   version__roles: versionsUser_version__roles_operator
+  version__hireDate: versionsUser_version__hireDate_operator
+  version__qualification: versionsUser_version__qualification_operator
   version__purchases: versionsUser_version__purchases_operator
   version__cart__items__product: versionsUser_version__cart__items__product_operator
   version__cart__items__quantity: versionsUser_version__cart__items__quantity_operator
@@ -6729,6 +6929,8 @@ input versionsUser_where_or {
   version__name: versionsUser_version__name_operator
   version__credits: versionsUser_version__credits_operator
   version__roles: versionsUser_version__roles_operator
+  version__hireDate: versionsUser_version__hireDate_operator
+  version__qualification: versionsUser_version__qualification_operator
   version__purchases: versionsUser_version__purchases_operator
   version__cart__items__product: versionsUser_version__cart__items__product_operator
   version__cart__items__quantity: versionsUser_version__cart__items__quantity_operator
@@ -8509,6 +8711,439 @@ type FooterUpdateDocAccess {
   where: JSONObject
 }
 
+type LimitsSetting {
+  title: String
+  formula: String
+  conversionRate: Float!
+  minBudget: Float!
+  maxBudget: Float!
+  qualificationCoefficients: [LimitsSetting_QualificationCoefficients!]
+  experienceCoefficients: [LimitsSetting_ExperienceCoefficients!]
+  skipSync: Boolean
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type LimitsSetting_QualificationCoefficients {
+  qualification: LimitsSetting_QualificationCoefficients_qualification
+  coefficient: Float
+  id: String
+}
+
+enum LimitsSetting_QualificationCoefficients_qualification {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
+}
+
+type LimitsSetting_ExperienceCoefficients {
+  experienceRange: LimitsSetting_ExperienceCoefficients_experienceRange
+  coefficient: Float
+  id: String
+}
+
+enum LimitsSetting_ExperienceCoefficients_experienceRange {
+  _1month
+  _3months
+  _6months
+  _1year
+  _2years
+  _5years
+}
+
+type limits_settingsDocAccess {
+  fields: LimitsSettingsDocAccessFields
+  read: LimitsSettingsReadDocAccess
+  update: LimitsSettingsUpdateDocAccess
+}
+
+type LimitsSettingsDocAccessFields {
+  formula: LimitsSettingsDocAccessFields_formula
+  conversionRate: LimitsSettingsDocAccessFields_conversionRate
+  minBudget: LimitsSettingsDocAccessFields_minBudget
+  maxBudget: LimitsSettingsDocAccessFields_maxBudget
+  qualificationCoefficients: LimitsSettingsDocAccessFields_qualificationCoefficients
+  experienceCoefficients: LimitsSettingsDocAccessFields_experienceCoefficients
+  skipSync: LimitsSettingsDocAccessFields_skipSync
+  updatedAt: LimitsSettingsDocAccessFields_updatedAt
+  createdAt: LimitsSettingsDocAccessFields_createdAt
+}
+
+type LimitsSettingsDocAccessFields_formula {
+  create: LimitsSettingsDocAccessFields_formula_Create
+  read: LimitsSettingsDocAccessFields_formula_Read
+  update: LimitsSettingsDocAccessFields_formula_Update
+  delete: LimitsSettingsDocAccessFields_formula_Delete
+}
+
+type LimitsSettingsDocAccessFields_formula_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_formula_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_formula_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_formula_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_conversionRate {
+  create: LimitsSettingsDocAccessFields_conversionRate_Create
+  read: LimitsSettingsDocAccessFields_conversionRate_Read
+  update: LimitsSettingsDocAccessFields_conversionRate_Update
+  delete: LimitsSettingsDocAccessFields_conversionRate_Delete
+}
+
+type LimitsSettingsDocAccessFields_conversionRate_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_conversionRate_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_conversionRate_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_conversionRate_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_minBudget {
+  create: LimitsSettingsDocAccessFields_minBudget_Create
+  read: LimitsSettingsDocAccessFields_minBudget_Read
+  update: LimitsSettingsDocAccessFields_minBudget_Update
+  delete: LimitsSettingsDocAccessFields_minBudget_Delete
+}
+
+type LimitsSettingsDocAccessFields_minBudget_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_minBudget_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_minBudget_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_minBudget_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_maxBudget {
+  create: LimitsSettingsDocAccessFields_maxBudget_Create
+  read: LimitsSettingsDocAccessFields_maxBudget_Read
+  update: LimitsSettingsDocAccessFields_maxBudget_Update
+  delete: LimitsSettingsDocAccessFields_maxBudget_Delete
+}
+
+type LimitsSettingsDocAccessFields_maxBudget_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_maxBudget_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_maxBudget_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_maxBudget_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients {
+  create: LimitsSettingsDocAccessFields_qualificationCoefficients_Create
+  read: LimitsSettingsDocAccessFields_qualificationCoefficients_Read
+  update: LimitsSettingsDocAccessFields_qualificationCoefficients_Update
+  delete: LimitsSettingsDocAccessFields_qualificationCoefficients_Delete
+  fields: LimitsSettingsDocAccessFields_qualificationCoefficients_Fields
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_Fields {
+  qualification: LimitsSettingsDocAccessFields_qualificationCoefficients_qualification
+  coefficient: LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient
+  id: LimitsSettingsDocAccessFields_qualificationCoefficients_id
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_qualification {
+  create: LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Create
+  read: LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Read
+  update: LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Update
+  delete: LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Delete
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_qualification_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient {
+  create: LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Create
+  read: LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Read
+  update: LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Update
+  delete: LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Delete
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_coefficient_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_id {
+  create: LimitsSettingsDocAccessFields_qualificationCoefficients_id_Create
+  read: LimitsSettingsDocAccessFields_qualificationCoefficients_id_Read
+  update: LimitsSettingsDocAccessFields_qualificationCoefficients_id_Update
+  delete: LimitsSettingsDocAccessFields_qualificationCoefficients_id_Delete
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_id_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_id_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_id_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_qualificationCoefficients_id_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients {
+  create: LimitsSettingsDocAccessFields_experienceCoefficients_Create
+  read: LimitsSettingsDocAccessFields_experienceCoefficients_Read
+  update: LimitsSettingsDocAccessFields_experienceCoefficients_Update
+  delete: LimitsSettingsDocAccessFields_experienceCoefficients_Delete
+  fields: LimitsSettingsDocAccessFields_experienceCoefficients_Fields
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_Fields {
+  experienceRange: LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange
+  coefficient: LimitsSettingsDocAccessFields_experienceCoefficients_coefficient
+  id: LimitsSettingsDocAccessFields_experienceCoefficients_id
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange {
+  create: LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Create
+  read: LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Read
+  update: LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Update
+  delete: LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Delete
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_experienceRange_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_coefficient {
+  create: LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Create
+  read: LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Read
+  update: LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Update
+  delete: LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Delete
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_coefficient_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_id {
+  create: LimitsSettingsDocAccessFields_experienceCoefficients_id_Create
+  read: LimitsSettingsDocAccessFields_experienceCoefficients_id_Read
+  update: LimitsSettingsDocAccessFields_experienceCoefficients_id_Update
+  delete: LimitsSettingsDocAccessFields_experienceCoefficients_id_Delete
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_id_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_id_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_id_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_experienceCoefficients_id_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_skipSync {
+  create: LimitsSettingsDocAccessFields_skipSync_Create
+  read: LimitsSettingsDocAccessFields_skipSync_Read
+  update: LimitsSettingsDocAccessFields_skipSync_Update
+  delete: LimitsSettingsDocAccessFields_skipSync_Delete
+}
+
+type LimitsSettingsDocAccessFields_skipSync_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_skipSync_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_skipSync_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_skipSync_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_updatedAt {
+  create: LimitsSettingsDocAccessFields_updatedAt_Create
+  read: LimitsSettingsDocAccessFields_updatedAt_Read
+  update: LimitsSettingsDocAccessFields_updatedAt_Update
+  delete: LimitsSettingsDocAccessFields_updatedAt_Delete
+}
+
+type LimitsSettingsDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_createdAt {
+  create: LimitsSettingsDocAccessFields_createdAt_Create
+  read: LimitsSettingsDocAccessFields_createdAt_Read
+  update: LimitsSettingsDocAccessFields_createdAt_Update
+  delete: LimitsSettingsDocAccessFields_createdAt_Delete
+}
+
+type LimitsSettingsDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type LimitsSettingsUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Access {
   canAccessAdmin: Boolean!
   pages: pagesAccess
@@ -8522,6 +9157,7 @@ type Access {
   settings: settingsAccess
   header: headerAccess
   footer: footerAccess
+  limits_settings: limits_settingsAccess
 }
 
 type pagesAccess {
@@ -9191,6 +9827,7 @@ type ProductsFields {
   publishedOn: ProductsFields_publishedOn
   layout: ProductsFields_layout
   price: ProductsFields_price
+  realPrice: ProductsFields_realPrice
   categories: ProductsFields_categories
   relatedProducts: ProductsFields_relatedProducts
   slug: ProductsFields_slug
@@ -9290,6 +9927,29 @@ type ProductsFields_price_Update {
 }
 
 type ProductsFields_price_Delete {
+  permission: Boolean!
+}
+
+type ProductsFields_realPrice {
+  create: ProductsFields_realPrice_Create
+  read: ProductsFields_realPrice_Read
+  update: ProductsFields_realPrice_Update
+  delete: ProductsFields_realPrice_Delete
+}
+
+type ProductsFields_realPrice_Create {
+  permission: Boolean!
+}
+
+type ProductsFields_realPrice_Read {
+  permission: Boolean!
+}
+
+type ProductsFields_realPrice_Update {
+  permission: Boolean!
+}
+
+type ProductsFields_realPrice_Delete {
   permission: Boolean!
 }
 
@@ -10241,6 +10901,8 @@ type UsersFields {
   name: UsersFields_name
   credits: UsersFields_credits
   roles: UsersFields_roles
+  hireDate: UsersFields_hireDate
+  qualification: UsersFields_qualification
   purchases: UsersFields_purchases
   cart: UsersFields_cart
   skipSync: UsersFields_skipSync
@@ -10317,6 +10979,52 @@ type UsersFields_roles_Update {
 }
 
 type UsersFields_roles_Delete {
+  permission: Boolean!
+}
+
+type UsersFields_hireDate {
+  create: UsersFields_hireDate_Create
+  read: UsersFields_hireDate_Read
+  update: UsersFields_hireDate_Update
+  delete: UsersFields_hireDate_Delete
+}
+
+type UsersFields_hireDate_Create {
+  permission: Boolean!
+}
+
+type UsersFields_hireDate_Read {
+  permission: Boolean!
+}
+
+type UsersFields_hireDate_Update {
+  permission: Boolean!
+}
+
+type UsersFields_hireDate_Delete {
+  permission: Boolean!
+}
+
+type UsersFields_qualification {
+  create: UsersFields_qualification_Create
+  read: UsersFields_qualification_Read
+  update: UsersFields_qualification_Update
+  delete: UsersFields_qualification_Delete
+}
+
+type UsersFields_qualification_Create {
+  permission: Boolean!
+}
+
+type UsersFields_qualification_Read {
+  permission: Boolean!
+}
+
+type UsersFields_qualification_Update {
+  permission: Boolean!
+}
+
+type UsersFields_qualification_Delete {
   permission: Boolean!
 }
 
@@ -11689,6 +12397,393 @@ type FooterUpdateAccess {
   where: JSONObject
 }
 
+type limits_settingsAccess {
+  fields: LimitsSettingsFields
+  read: LimitsSettingsReadAccess
+  update: LimitsSettingsUpdateAccess
+}
+
+type LimitsSettingsFields {
+  formula: LimitsSettingsFields_formula
+  conversionRate: LimitsSettingsFields_conversionRate
+  minBudget: LimitsSettingsFields_minBudget
+  maxBudget: LimitsSettingsFields_maxBudget
+  qualificationCoefficients: LimitsSettingsFields_qualificationCoefficients
+  experienceCoefficients: LimitsSettingsFields_experienceCoefficients
+  skipSync: LimitsSettingsFields_skipSync
+  updatedAt: LimitsSettingsFields_updatedAt
+  createdAt: LimitsSettingsFields_createdAt
+}
+
+type LimitsSettingsFields_formula {
+  create: LimitsSettingsFields_formula_Create
+  read: LimitsSettingsFields_formula_Read
+  update: LimitsSettingsFields_formula_Update
+  delete: LimitsSettingsFields_formula_Delete
+}
+
+type LimitsSettingsFields_formula_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_formula_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_formula_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_formula_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_conversionRate {
+  create: LimitsSettingsFields_conversionRate_Create
+  read: LimitsSettingsFields_conversionRate_Read
+  update: LimitsSettingsFields_conversionRate_Update
+  delete: LimitsSettingsFields_conversionRate_Delete
+}
+
+type LimitsSettingsFields_conversionRate_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_conversionRate_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_conversionRate_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_conversionRate_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_minBudget {
+  create: LimitsSettingsFields_minBudget_Create
+  read: LimitsSettingsFields_minBudget_Read
+  update: LimitsSettingsFields_minBudget_Update
+  delete: LimitsSettingsFields_minBudget_Delete
+}
+
+type LimitsSettingsFields_minBudget_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_minBudget_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_minBudget_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_minBudget_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_maxBudget {
+  create: LimitsSettingsFields_maxBudget_Create
+  read: LimitsSettingsFields_maxBudget_Read
+  update: LimitsSettingsFields_maxBudget_Update
+  delete: LimitsSettingsFields_maxBudget_Delete
+}
+
+type LimitsSettingsFields_maxBudget_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_maxBudget_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_maxBudget_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_maxBudget_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients {
+  create: LimitsSettingsFields_qualificationCoefficients_Create
+  read: LimitsSettingsFields_qualificationCoefficients_Read
+  update: LimitsSettingsFields_qualificationCoefficients_Update
+  delete: LimitsSettingsFields_qualificationCoefficients_Delete
+  fields: LimitsSettingsFields_qualificationCoefficients_Fields
+}
+
+type LimitsSettingsFields_qualificationCoefficients_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_Fields {
+  qualification: LimitsSettingsFields_qualificationCoefficients_qualification
+  coefficient: LimitsSettingsFields_qualificationCoefficients_coefficient
+  id: LimitsSettingsFields_qualificationCoefficients_id
+}
+
+type LimitsSettingsFields_qualificationCoefficients_qualification {
+  create: LimitsSettingsFields_qualificationCoefficients_qualification_Create
+  read: LimitsSettingsFields_qualificationCoefficients_qualification_Read
+  update: LimitsSettingsFields_qualificationCoefficients_qualification_Update
+  delete: LimitsSettingsFields_qualificationCoefficients_qualification_Delete
+}
+
+type LimitsSettingsFields_qualificationCoefficients_qualification_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_qualification_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_qualification_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_qualification_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_coefficient {
+  create: LimitsSettingsFields_qualificationCoefficients_coefficient_Create
+  read: LimitsSettingsFields_qualificationCoefficients_coefficient_Read
+  update: LimitsSettingsFields_qualificationCoefficients_coefficient_Update
+  delete: LimitsSettingsFields_qualificationCoefficients_coefficient_Delete
+}
+
+type LimitsSettingsFields_qualificationCoefficients_coefficient_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_coefficient_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_coefficient_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_coefficient_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_id {
+  create: LimitsSettingsFields_qualificationCoefficients_id_Create
+  read: LimitsSettingsFields_qualificationCoefficients_id_Read
+  update: LimitsSettingsFields_qualificationCoefficients_id_Update
+  delete: LimitsSettingsFields_qualificationCoefficients_id_Delete
+}
+
+type LimitsSettingsFields_qualificationCoefficients_id_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_id_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_id_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_qualificationCoefficients_id_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients {
+  create: LimitsSettingsFields_experienceCoefficients_Create
+  read: LimitsSettingsFields_experienceCoefficients_Read
+  update: LimitsSettingsFields_experienceCoefficients_Update
+  delete: LimitsSettingsFields_experienceCoefficients_Delete
+  fields: LimitsSettingsFields_experienceCoefficients_Fields
+}
+
+type LimitsSettingsFields_experienceCoefficients_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_Fields {
+  experienceRange: LimitsSettingsFields_experienceCoefficients_experienceRange
+  coefficient: LimitsSettingsFields_experienceCoefficients_coefficient
+  id: LimitsSettingsFields_experienceCoefficients_id
+}
+
+type LimitsSettingsFields_experienceCoefficients_experienceRange {
+  create: LimitsSettingsFields_experienceCoefficients_experienceRange_Create
+  read: LimitsSettingsFields_experienceCoefficients_experienceRange_Read
+  update: LimitsSettingsFields_experienceCoefficients_experienceRange_Update
+  delete: LimitsSettingsFields_experienceCoefficients_experienceRange_Delete
+}
+
+type LimitsSettingsFields_experienceCoefficients_experienceRange_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_experienceRange_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_experienceRange_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_experienceRange_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_coefficient {
+  create: LimitsSettingsFields_experienceCoefficients_coefficient_Create
+  read: LimitsSettingsFields_experienceCoefficients_coefficient_Read
+  update: LimitsSettingsFields_experienceCoefficients_coefficient_Update
+  delete: LimitsSettingsFields_experienceCoefficients_coefficient_Delete
+}
+
+type LimitsSettingsFields_experienceCoefficients_coefficient_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_coefficient_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_coefficient_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_coefficient_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_id {
+  create: LimitsSettingsFields_experienceCoefficients_id_Create
+  read: LimitsSettingsFields_experienceCoefficients_id_Read
+  update: LimitsSettingsFields_experienceCoefficients_id_Update
+  delete: LimitsSettingsFields_experienceCoefficients_id_Delete
+}
+
+type LimitsSettingsFields_experienceCoefficients_id_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_id_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_id_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_experienceCoefficients_id_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_skipSync {
+  create: LimitsSettingsFields_skipSync_Create
+  read: LimitsSettingsFields_skipSync_Read
+  update: LimitsSettingsFields_skipSync_Update
+  delete: LimitsSettingsFields_skipSync_Delete
+}
+
+type LimitsSettingsFields_skipSync_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_skipSync_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_skipSync_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_skipSync_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_updatedAt {
+  create: LimitsSettingsFields_updatedAt_Create
+  read: LimitsSettingsFields_updatedAt_Read
+  update: LimitsSettingsFields_updatedAt_Update
+  delete: LimitsSettingsFields_updatedAt_Delete
+}
+
+type LimitsSettingsFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_createdAt {
+  create: LimitsSettingsFields_createdAt_Create
+  read: LimitsSettingsFields_createdAt_Read
+  update: LimitsSettingsFields_createdAt_Update
+  delete: LimitsSettingsFields_createdAt_Delete
+}
+
+type LimitsSettingsFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type LimitsSettingsFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type LimitsSettingsReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type LimitsSettingsUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Mutation {
   createPage(data: mutationPageInput!, draft: Boolean): Page
   updatePage(id: String!, autosave: Boolean, data: mutationPageUpdateInput!, draft: Boolean): Page
@@ -11727,6 +12822,7 @@ type Mutation {
   updateSettings(data: mutationSettingsInput!, draft: Boolean): Settings
   updateHeader(data: mutationHeaderInput!, draft: Boolean): Header
   updateFooter(data: mutationFooterInput!, draft: Boolean): Footer
+  updateLimitsSetting(data: mutationLimitsSettingInput!, draft: Boolean): LimitsSetting
 }
 
 input mutationPageInput {
@@ -11869,7 +12965,8 @@ input mutationProductInput {
   title: String!
   publishedOn: String
   layout: JSON
-  price: Float!
+  price: Float
+  realPrice: Float!
   categories: String
   relatedProducts: [String]
   slug: String
@@ -11896,6 +12993,7 @@ input mutationProductUpdateInput {
   publishedOn: String
   layout: JSON
   price: Float
+  realPrice: Float
   categories: String
   relatedProducts: [String]
   slug: String
@@ -11991,6 +13089,8 @@ input mutationUserInput {
   name: String!
   credits: Float!
   roles: [User_roles_MutationInput]
+  hireDate: String!
+  qualification: User_qualification_MutationInput
   purchases: [String]
   cart: mutationUser_CartInput
   skipSync: Boolean
@@ -12013,6 +13113,18 @@ enum User_roles_MutationInput {
   manager
 }
 
+enum User_qualification_MutationInput {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
+}
+
 input mutationUser_CartInput {
   items: [mutationUser_Cart_ItemsInput]
 }
@@ -12032,6 +13144,8 @@ input mutationUserUpdateInput {
   name: String
   credits: Float
   roles: [UserUpdate_roles_MutationInput]
+  hireDate: String
+  qualification: UserUpdate_qualification_MutationInput
   purchases: [String]
   cart: mutationUserUpdate_CartInput
   skipSync: Boolean
@@ -12052,6 +13166,18 @@ enum UserUpdate_roles_MutationInput {
   admin
   customer
   manager
+}
+
+enum UserUpdate_qualification_MutationInput {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
 }
 
 input mutationUserUpdate_CartInput {
@@ -12234,4 +13360,50 @@ input Footer_NavItems_Link_ReferenceRelationshipInput {
 
 enum Footer_NavItems_Link_ReferenceRelationshipInputRelationTo {
   pages
+}
+
+input mutationLimitsSettingInput {
+  title: String
+  formula: String
+  conversionRate: Float!
+  minBudget: Float!
+  maxBudget: Float!
+  qualificationCoefficients: [mutationLimitsSetting_QualificationCoefficientsInput]
+  experienceCoefficients: [mutationLimitsSetting_ExperienceCoefficientsInput]
+  skipSync: Boolean
+  updatedAt: String
+  createdAt: String
+}
+
+input mutationLimitsSetting_QualificationCoefficientsInput {
+  qualification: LimitsSetting_QualificationCoefficients_qualification_MutationInput
+  coefficient: Float
+  id: String
+}
+
+enum LimitsSetting_QualificationCoefficients_qualification_MutationInput {
+  basicGeneralEducation
+  secondarySchool
+  lowerPostSecondaryVocationalEducation
+  incompleteHigherEducation
+  bachelorsDegree
+  specialistDegree
+  mastersDegree
+  postgraduateDegreeOrPhD
+  secondHigherDegree
+}
+
+input mutationLimitsSetting_ExperienceCoefficientsInput {
+  experienceRange: LimitsSetting_ExperienceCoefficients_experienceRange_MutationInput
+  coefficient: Float!
+  id: String
+}
+
+enum LimitsSetting_ExperienceCoefficients_experienceRange_MutationInput {
+  _1month
+  _3months
+  _6months
+  _1year
+  _2years
+  _5years
 }

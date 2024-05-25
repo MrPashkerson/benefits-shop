@@ -3,26 +3,16 @@ import path from 'path'
 import type { Payload } from 'payload'
 
 import { cartPage } from './cart-page'
-import { home } from './home'
-import { footerIcon1 } from './footer/x'
-import { footerIcon2 } from './footer/linkedin'
-import { productImage1 } from './products/public/mobile-network'
-import { productImage2 } from './products/public/medical-insurance'
-import { productImage3 } from './products/public/beauty-salon'
-import { productImage4 } from './products/public/yandex-plus'
-import { productImage5 } from './products/public/spotify-logo'
-import { productImage6 } from './products/public/yandex-food'
-import { productImage7 } from './products/public/sportclub-pass'
-import { productImage8 } from './products/public/public-transport-pass'
-import { productImage9 } from './products/public/fuel-costs'
 import { categoryImage1 } from './categories/beauty-category'
 import { categoryImage2 } from './categories/food-category'
 import { categoryImage3 } from './categories/health-category'
 import { categoryImage4 } from './categories/home-category'
 import { categoryImage5 } from './categories/transport-category'
 import { categoryImage6 } from './categories/travel-category'
+import { footerIcon2 } from './footer/linkedin'
+import { footerIcon1 } from './footer/x'
 import { heroImage } from './hero/hero'
-import { productsPage } from './products-page'
+import { home } from './home'
 import { product1 } from './products/product-1'
 import { product2 } from './products/product-2'
 import { product3 } from './products/product-3'
@@ -32,6 +22,16 @@ import { product6 } from './products/product-6'
 import { product7 } from './products/product-7'
 import { product8 } from './products/product-8'
 import { product9 } from './products/product-9'
+import { productImage3 } from './products/public/beauty-salon'
+import { productImage9 } from './products/public/fuel-costs'
+import { productImage2 } from './products/public/medical-insurance'
+import { productImage1 } from './products/public/mobile-network'
+import { productImage8 } from './products/public/public-transport-pass'
+import { productImage7 } from './products/public/sportclub-pass'
+import { productImage5 } from './products/public/spotify-logo'
+import { productImage6 } from './products/public/yandex-food'
+import { productImage4 } from './products/public/yandex-plus'
+import { productsPage } from './products-page'
 
 const collections = ['categories', 'media', 'pages', 'products']
 const globals = ['header', 'settings', 'footer']
@@ -581,6 +581,99 @@ export const seed = async (payload: Payload): Promise<void> => {
             icon: footerIconLinkedInID,
             label: 'LinkedIn',
           },
+        },
+      ],
+    },
+  })
+
+  payload.logger.info(`Seeding limits-settings...`)
+
+  await payload.updateGlobal({
+    slug: 'limits-settings',
+    data: {
+      formula:
+        'min(maxCredits, minCredits + (minCredits * Коэффициент квалификации) + (minCredits * Коэффициент стажа))',
+      conversionRate: 1,
+      minBudget: 300,
+      maxBudget: 750,
+
+      qualificationCoefficients: [
+        {
+          coefficient: 0.1,
+          qualification: 'basicGeneralEducation',
+          id: '66503bf4af28e8f914b06ef2',
+        },
+        {
+          qualification: 'secondarySchool',
+          coefficient: 0.2,
+          id: '66503bfdaf28e8f914b06ef3',
+        },
+        {
+          qualification: 'lowerPostSecondaryVocationalEducation',
+          coefficient: 0.3,
+          id: '66503bffaf28e8f914b06ef4',
+        },
+        {
+          qualification: 'incompleteHigherEducation',
+          coefficient: 0.4,
+          id: '66503c01af28e8f914b06ef5',
+        },
+        {
+          qualification: 'bachelorsDegree',
+          coefficient: 0.5,
+          id: '66503c02af28e8f914b06ef6',
+        },
+        {
+          qualification: 'specialistDegree',
+          coefficient: 0.6,
+          id: '66503c04af28e8f914b06ef7',
+        },
+        {
+          qualification: 'mastersDegree',
+          coefficient: 0.7,
+          id: '66503c05af28e8f914b06ef8',
+        },
+        {
+          qualification: 'postgraduateDegreeOrPhD',
+          coefficient: 0.8,
+          id: '66503c06af28e8f914b06ef9',
+        },
+        {
+          qualification: 'secondHigherDegree',
+          coefficient: 0.8,
+          id: '66503c08af28e8f914b06efa',
+        },
+      ],
+      experienceCoefficients: [
+        {
+          experienceRange: '1 month',
+          coefficient: 0.1,
+          id: '66503c52af28e8f914b06efc',
+        },
+        {
+          experienceRange: '3 months',
+          coefficient: 0.2,
+          id: '66503c53af28e8f914b06efd',
+        },
+        {
+          experienceRange: '6 months',
+          coefficient: 0.4,
+          id: '66503c55af28e8f914b06efe',
+        },
+        {
+          experienceRange: '1 year',
+          coefficient: 0.5,
+          id: '66503c61af28e8f914b06eff',
+        },
+        {
+          experienceRange: '2 years',
+          coefficient: 0.75,
+          id: '66503c67af28e8f914b06f00',
+        },
+        {
+          experienceRange: '5 years',
+          coefficient: 1,
+          id: '66503c6aaf28e8f914b06f01',
         },
       ],
     },

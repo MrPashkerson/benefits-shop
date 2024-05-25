@@ -10,6 +10,7 @@ import path from 'path'
 import { buildConfig } from 'payload/config'
 
 import Categories from './collections/Categories'
+import limitsSettings from './globals/LimitsSettings'
 import { Media } from './collections/Media'
 import { Orders } from './collections/Orders'
 import { Pages } from './collections/Pages'
@@ -18,12 +19,12 @@ import Users from './collections/Users'
 import beforeDashboard from './components/BeforeDashboard'
 import CustomIcon from './components/CustomIcon'
 import CustomLogo from './components/CustomLogo'
+import { checkCredits } from './endpoints/check-credits'
 import { checkPages } from './endpoints/check-pages-collection'
 import { seed } from './endpoints/seed'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { Settings } from './globals/Settings'
-import {checkCredits} from "./endpoints/check-credits";
 
 const generateTitle: GenerateTitle = () => {
   return 'Магазин Льгот'
@@ -78,7 +79,7 @@ export default buildConfig({
   // database-adapter-config-end
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL,
   collections: [Pages, Products, Orders, Media, Categories, Users],
-  globals: [Settings, Header, Footer],
+  globals: [Settings, Header, Footer, limitsSettings],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },

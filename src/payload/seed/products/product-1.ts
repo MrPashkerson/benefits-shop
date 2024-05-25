@@ -10,5 +10,6 @@ export const product1: Partial<Product> = {
   },
   layout: [],
   price: 40,
+  realPrice: 40,
   relatedProducts: [],
 }

@@ -34,6 +34,7 @@ export interface Config {
     settings: Settings;
     header: Header;
     footer: Footer;
+    'limits-settings': LimitsSetting;
   };
 }
 /**
@@ -298,7 +299,8 @@ export interface Product {
           }
       )[]
     | null;
-  price: number;
+  price?: number | null;
+  realPrice: number;
   categories?: (string | null) | Category;
   relatedProducts?: (string | Product)[] | null;
   slug?: string | null;
@@ -340,6 +342,17 @@ export interface User {
   name: string;
   credits: number;
   roles?: ('admin' | 'customer' | 'manager')[] | null;
+  hireDate: string;
+  qualification:
+    | 'basicGeneralEducation'
+    | 'secondarySchool'
+    | 'lowerPostSecondaryVocationalEducation'
+    | 'incompleteHigherEducation'
+    | 'bachelorsDegree'
+    | 'specialistDegree'
+    | 'mastersDegree'
+    | 'postgraduateDegreeOrPhD'
+    | 'secondHigherDegree';
   purchases?: (string | Product)[] | null;
   cart?: {
     items?: CartItems;
@@ -472,6 +485,47 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "limits-settings".
+ */
+export interface LimitsSetting {
+  id: string;
+  title?: string | null;
+  formula?: string | null;
+  conversionRate: number;
+  minBudget: number;
+  maxBudget: number;
+  qualificationCoefficients?:
+    | {
+        qualification?:
+          | (
+              | 'basicGeneralEducation'
+              | 'secondarySchool'
+              | 'lowerPostSecondaryVocationalEducation'
+              | 'incompleteHigherEducation'
+              | 'bachelorsDegree'
+              | 'specialistDegree'
+              | 'mastersDegree'
+              | 'postgraduateDegreeOrPhD'
+              | 'secondHigherDegree'
+            )
+          | null;
+        coefficient?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  experienceCoefficients?:
+    | {
+        experienceRange?: ('1 month' | '3 months' | '6 months' | '1 year' | '2 years' | '5 years') | null;
+        coefficient: number;
+        id?: string | null;
+      }[]
+    | null;
+  skipSync?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

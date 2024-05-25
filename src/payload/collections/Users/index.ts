@@ -92,6 +92,62 @@ const Users: CollectionConfig = {
       },
     },
     {
+      name: 'hireDate',
+      label: 'Дата найма',
+      type: 'date',
+      required: true,
+    },
+    {
+      name: 'qualification',
+      label: 'Квалификация',
+      type: 'select',
+      required: true,
+      hasMany: false,
+      options: [
+        {
+          label: 'Среднее общее образование (9 классов)',
+          value: 'basicGeneralEducation',
+        },
+        {
+          label: 'Среднее полное образование (11 классов)',
+          value: 'secondarySchool',
+        },
+        {
+          label: 'Среднее профессиональное образование',
+          value: 'lowerPostSecondaryVocationalEducation',
+        },
+        {
+          label: 'Незаконченное высшее образование',
+          value: 'incompleteHigherEducation',
+        },
+        {
+          label: 'Высшее образование (бакалавриат)',
+          value: 'bachelorsDegree',
+        },
+        {
+          label: 'Высшее образование (специалитет)',
+          value: 'specialistDegree',
+        },
+        {
+          label: 'Высшее образование (магистратура)',
+          value: 'mastersDegree',
+        },
+        {
+          label: 'Аспирантура/Докторантура',
+          value: 'postgraduateDegreeOrPhD',
+        },
+        {
+          label: 'Два и более высших образования',
+          value: 'secondHigherDegree',
+        },
+      ],
+      access: {
+        read: admins,
+        create: admins,
+        update: admins,
+      },
+    },
+    {
       name: 'purchases',
       label: 'Покупки',
       type: 'relationship',
