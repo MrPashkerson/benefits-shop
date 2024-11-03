@@ -42,3 +42,5 @@
 Больше информации:
 
 ![more-info.svg](more-info.svg)
+
+https://drive.google.com/file/d/1C_QG8mEXHG1TEiS5ZUMIse4Xrq-aAFPk/view?usp=drivesdk
